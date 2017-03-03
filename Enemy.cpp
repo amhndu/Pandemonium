@@ -2,9 +2,15 @@
 #include "ResourceManager.h"
 #include "Constants.h"
 #include<iostream>
+<<<<<<< HEAD
 Enemy::Enemy(Player& player):
     GameObject(EnemyObject),
     m_player(player)
+=======
+
+Enemy::Enemy():
+    GameObject(EnemyObject)
+>>>>>>> 319ca6eb1149f3b2d0fe7152aed72f52563115c1
 {
     m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
     m_sprite.setSpriteIndex(0);

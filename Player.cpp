@@ -62,19 +62,21 @@ void Player::update(float dt)
         {
             m_position.x += PLAYER_VELOCITY * dt;
             moving = true;
+            m_sprite.setFlip(false);
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_sprite.getPosition().x >= 0)
         {
             m_position.x += -PLAYER_VELOCITY * dt;
             moving = true;
+            m_sprite.setFlip(true);
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_z >= 0)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_z >= 0 && m_sprite.getPosition().x < WINDOW_WIDTH)
         {
             m_z += -Z_VELOCITY * dt;
             moving = true;
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_z < 10)
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_z < 10 && m_sprite.getPosition().x >= 0)
         {
             m_z += Z_VELOCITY * dt;
             moving = true;
