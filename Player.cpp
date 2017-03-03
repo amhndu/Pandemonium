@@ -56,20 +56,22 @@ void Player::update(float dt)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        m_position.y += PLAYER_VELOCITY * dt;
+        m_position.x += PLAYER_VELOCITY * dt;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        m_position.y += -PLAYER_VELOCITY * dt;
+        m_position.x += -PLAYER_VELOCITY * dt;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        m_z += PLAYER_VELOCITY * dt;
+        if (m_z < 1)
+            m_z += Z_VELOCITY * dt;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        m_z += -PLAYER_VELOCITY * dt;
+        if (m_z > -10)
+            m_z += -Z_VELOCITY * dt;
     }
 
     float d = LAND_APP_HEIGHT * m_z / 10.f;
