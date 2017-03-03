@@ -3,12 +3,13 @@
 
 #include "GameObject.h"
 #include "SpriteSheet.h"
+#include "Player.h"
 #include <SFML/Graphics.hpp>
 
 class Enemy : public GameObject
 {
 public:
-    Enemy();
+    Enemy(Player &player);
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;
@@ -21,5 +22,9 @@ private:
     SpriteSheet m_sprite;
     sf::Vector2f m_position;
     int m_z;
+    float m_frameTimer;
+    int m_frame;
+    Player& m_player;
+    
 };
 #endif // ENEMY_H
