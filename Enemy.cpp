@@ -2,15 +2,10 @@
 #include "ResourceManager.h"
 #include "Constants.h"
 #include<iostream>
-<<<<<<< HEAD
+
 Enemy::Enemy(Player& player):
     GameObject(EnemyObject),
     m_player(player)
-=======
-
-Enemy::Enemy():
-    GameObject(EnemyObject)
->>>>>>> 319ca6eb1149f3b2d0fe7152aed72f52563115c1
 {
     m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
     m_sprite.setSpriteIndex(0);
@@ -49,6 +44,7 @@ sf::Vector2f Enemy::getPosition()
 void Enemy::setPosition(float x, float y)
 {
     m_z = 0;
+    m_position = {x, y};
     m_sprite.setPosition(x, y);
 }
 
@@ -64,6 +60,8 @@ void Enemy::update(float dt)
     if (m_active)
     {
         bool moving = false;
+	/*
+	
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && m_sprite.getPosition().x < WINDOW_WIDTH)
         {
             m_position.x += PLAYER_VELOCITY * dt;
@@ -84,18 +82,37 @@ void Enemy::update(float dt)
         {
             m_z += Z_VELOCITY * dt;
             moving = true;
-        }
+        }*/
         
         
+        if(getPosition().x - m_player.getPosition().x > 0 + 10.f)
+	{
+	    m_position.x += -ENEMY_VELOCITY * dt;
+	    moving = true;
+	    m_sprite.setFlip(false);
+	}
+	else if(getPosition().x - m_player.getPosition().x < 0 + 10.f)
+	{
+	    m_position.x += +ENEMY_VELOCITY * dt;
+	    moving = true;
+	    m_sprite.setFlip(true);
+	}
         
-        
-        
+        if(getPosition().y - m_player.getPosition().y > 0)
+	{
+	    m_z += -Z_VELOCITY  * dt;
+	    moving = true;
+	}
+	else if(getPosition().y - m_player.getPosition().y < 0)
+	{
+	    m_z += Z_VELOCITY * dt;
+	    moving = true;
+	}
         
         
 
         float d = LAND_APP_HEIGHT * m_z / 10.f;
-        m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
-                                m_position.y + d);
+        m_sprite.setPosition(m_position.x + d * LAND_SLOPE, m_position.y + d);
 
         if (moving)
         {
@@ -105,7 +122,7 @@ void Enemy::update(float dt)
                 m_frameTimer -= 0.3;
 
                 ++m_frame;
-                if (m_frame >= 4)
+                if (m_frame >= 8)
                     m_frame = 1;
             }
         }
