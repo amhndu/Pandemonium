@@ -8,6 +8,7 @@
 class Enemy : public GameObject
 {
 public:
+    Enemy();
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;

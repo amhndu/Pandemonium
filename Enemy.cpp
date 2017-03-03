@@ -1,4 +1,15 @@
 #include "Enemy.h"
+#include "ResourceManager.h"
+#include "Constants.h"
+#include<iostream>
+Enemy::Enemy():
+    GameObject(EnemyObject)
+{
+    m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
+    m_sprite.setSpriteIndex(0);
+    m_sprite.setScale(200.f/ 810.f);
+}
+
 
 void Enemy::handleCollision(GameObject& other)
 {
@@ -47,4 +58,5 @@ void Enemy::update(float dt)
 void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(m_sprite);
+    std::cout<<"DSfs";
 }
