@@ -54,29 +54,32 @@ void Player::handleEvent(const sf::Event& event)
 
 void Player::update(float dt)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (m_active)
     {
-        m_position.x += PLAYER_VELOCITY * dt;
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        m_position.x += -PLAYER_VELOCITY * dt;
-    }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            m_position.x += PLAYER_VELOCITY * dt;
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            m_position.x += -PLAYER_VELOCITY * dt;
+        }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-        if (m_z < 1)
-            m_z += Z_VELOCITY * dt;
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
-        if (m_z > -10)
-            m_z += -Z_VELOCITY * dt;
-    }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+             if (m_z > 0)
+                m_z += -Z_VELOCITY * dt;
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+              if (m_z < 10)
+                m_z += Z_VELOCITY * dt;
+        }
 
-    float d = LAND_APP_HEIGHT * m_z / 10.f;
-    m_sprite.setPosition(m_position.x + d,
-                            m_position.y + LAND_SLOPE * d);
+        float d = LAND_APP_HEIGHT * m_z / 10.f;
+        m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
+                                m_position.y + d);
+    }
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

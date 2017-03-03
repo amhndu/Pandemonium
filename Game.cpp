@@ -11,7 +11,7 @@ template<>
 std::unique_ptr<FontManager> FontManager::m_instance = nullptr;
 
 Game::Game() :
-    m_window(sf::VideoMode(800, 600)/*::getDesktopMode()*/, "Game Jam Entry"/*, sf::Style::Fullscreen*/)
+    m_window(sf::VideoMode::getDesktopMode(), "Game Jam Entry", sf::Style::Fullscreen)
 {
     FontManager::load(DefaultFont, "assets/font.ttf");
 
@@ -35,7 +35,7 @@ Game::Game() :
     exitBtn.setCallback([&](){ setState(Exit); });
 
     auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player()));
-    player.setPosition(0, m_window.getSize().y - 300.f);
+    player.setPosition(0, m_window.getSize().y - 300.f - 200);
 
     setState(StartScreen);
 }
