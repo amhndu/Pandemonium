@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "SpriteSheet.h"
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 class Player : public GameObject
 {
@@ -23,10 +24,14 @@ private:
     sf::Vector2f m_position;
     float m_z;
     float m_frameTimer;
-    int m_frame;
     bool m_jumping;
     int m_health;
     int m_armour;
+    std::vector<std::vector<int>> m_animationframe;
+    std::size_t m_currentAnimation;
+    std::size_t m_frame;
+    bool m_attack1;
+
 };
 
 #endif // PLAYER_H
