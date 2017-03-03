@@ -4,7 +4,8 @@
 
 Player::Player() :
     GameObject(PlayerObject),
-    m_frameTimer(0)
+    m_frameTimer(0),
+    m_jumping(false)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {374, 810});
     m_sprite.setSpriteIndex(0);
@@ -89,9 +90,9 @@ void Player::update(float dt)
         if (moving)
         {
             m_frameTimer += dt;
-            if (m_frameTimer > 0.3)
+            if (m_frameTimer > ANIM_FRAME_TIME)
             {
-                m_frameTimer -= 0.3;
+                m_frameTimer -= ANIM_FRAME_TIME;
 
                 ++m_frame;
                 if (m_frame >= 4)

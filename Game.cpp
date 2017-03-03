@@ -38,7 +38,7 @@ Game::Game() :
     exitBtn.setCallback([&](){ setState(Exit); });
 
     auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player()));
-    player.setPosition(0, m_window.getSize().y - 300.f - 200);
+    player.setPosition(0, m_window.getSize().y - LAND_APP_HEIGHT - 200);
 
 
     auto &bot1 = *static_cast<Enemy*>(m_gameObjects.insert("bot1", new Enemy()));

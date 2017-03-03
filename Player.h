@@ -23,6 +23,7 @@ private:
     float m_z;
     float m_frameTimer;
     int m_frame;
+    bool m_jumping;
 };
 
 #endif // PLAYER_H

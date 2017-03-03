@@ -25,8 +25,12 @@ void GameObjectManager::handleEvent(const sf::Event& event)
 
 void GameObjectManager::update(float dt)
 {
-    for (auto& go : m_objects)
-        go.second->update(dt);
+    for (auto go = m_objects.begin(); go != m_objects.end(); ++go)
+    {
+        go->second->update(dt);
+        for (auto other = std::next(go); other != m_objects.end(); ++other)
+            go->second->handleCollision(*other->second);
+    }
 }
 
 void GameObjectManager::setActive(bool active)
