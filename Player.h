@@ -15,6 +15,7 @@ public:
     void setPosition(float x, float y) override;
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
+    float getZ();
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:

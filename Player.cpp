@@ -42,6 +42,11 @@ sf::Vector2f Player::getPosition()
     return m_sprite.getPosition();
 }
 
+float Player::getZ()
+{
+    return m_z;
+}
+
 void Player::setPosition(float x, float y)
 {
     m_z = 0.f;
