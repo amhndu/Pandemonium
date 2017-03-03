@@ -4,12 +4,14 @@
 #include <iostream>
 #include <cmath>
 
-Enemy::Enemy(Player& player):
+Enemy::Enemy(Type type, Player& player):
     GameObject(EnemyObject),
+    m_frame(0),
     m_player(player),
-    m_armour(MAX_ARMOUR),
-    m_health(MAX_HEALTH)
+    m_health(MAX_HEALTH),
+    m_type(type)
 {
+    //TODO type
     m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
     m_sprite.setSpriteIndex(0);
     m_sprite.setScale(200.f/ 212.f);
@@ -58,45 +60,39 @@ void Enemy::handleEvent(const sf::Event& event)
 
 void Enemy::update(float dt)
 {
-  
-
     if (m_active)
     {
         bool moving = false;
-	
         if (std::abs(m_player.getPosition().x - getPosition().x) < 10)
-	  moving = false;
+            moving = false;
         else if(getPosition().x - m_player.getPosition().x > 0)
-	{
-	    m_position.x += -ENEMY_VELOCITY * dt;
-	    moving = true;
-	    m_sprite.setFlip(false);
-	}
-	else if(getPosition().x - m_player.getPosition().x < 0)
-	{
-	    m_position.x += +ENEMY_VELOCITY * dt;
-	    moving = true;
-	    m_sprite.setFlip(true);
-	}
-        
-        if (std::abs(m_player.getZ() - m_z) < 2)
-	  ;
-        else if(m_player.getZ() - m_z > 0)
-	{
-	    m_z += 4 * Z_VELOCITY  * dt / 5;
-	    moving = true;
-	}
-	else if(m_player.getZ() - m_z < 0)
-	{
-	    m_z += -(4 * Z_VELOCITY * dt / 5);
-	    moving = true;
-	}
-        
-        
+        {
+            m_position.x += -ENEMY_VELOCITY * dt;
+            moving = true;
+            m_sprite.setFlip(false);
+        }
+        else if(getPosition().x - m_player.getPosition().x < 0)
+        {
+            m_position.x += +ENEMY_VELOCITY * dt;
+            moving = true;
+            m_sprite.setFlip(true);
+        }
 
+        if (std::abs(m_player.getZ() - m_z) < 2)
+            ;
+        else if(m_player.getZ() - m_z > 0)
+        {
+            m_z += 4 * Z_VELOCITY  * dt / 5;
+            moving = true;
+        }
+        else if(m_player.getZ() - m_z < 0)
+        {
+            m_z += -(4 * Z_VELOCITY * dt / 5);
+            moving = true;
+        }
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
-			     m_position.y + d);
+                                m_position.y + d);
 
         if (moving)
         {
@@ -113,11 +109,22 @@ void Enemy::update(float dt)
         else
             m_frame = 0;
         m_sprite.setSpriteIndex(m_frame);
+
+        if (m_health <= 0)
+        {
+            m_deathCallback();
+            m_active = false;
+        }
     }
-  
 }
+
+bool Enemy::toDestroy()
+{
+    return m_health <= 0;
+}
+
 
 void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(m_sprite);
+    target.draw(m_sprite, states);
 }

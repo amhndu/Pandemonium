@@ -17,6 +17,5 @@
 #define LAND_APP_HEIGHT     200.f      /* Apparent height */
 #define LAND_SLOPE          -200.f / 300.f
 #define ANIM_FRAME_TIME     0.3f
-#define MAX_HEALTH	    100
-#define MAX_ARMOUR          100
+#define MAX_HEALTH          100
 #endif //CONSTANTS_H

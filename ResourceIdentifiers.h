@@ -6,11 +6,13 @@ enum TextureIdentifier
 {
     Placeholder,
     StartScreenBackground,
-    GameBackground,
+    EntranceSceneBG,
+    RuinSceneBG,
     GameOverBackground,
     PlayerSprite,
     Bot1Sprite,
     Bot2Sprite,
+    BotBossSpirte,
     Cutscene1,
     Cutscene2,
     Cutscene3

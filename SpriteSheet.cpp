@@ -8,6 +8,7 @@ void SpriteSheet::setTexture(sf::Texture& texture, sf::Vector2i size)
     m_spriteSize = size;
     m_sprite.setOrigin({0, 0});
     m_flip = false;
+    m_index = 0;
 }
 
 void SpriteSheet::setPosition(float x, float y)
@@ -27,6 +28,7 @@ void SpriteSheet::setScale(float s)
 
 void SpriteSheet::setSpriteIndex(int n)
 {
+    m_index = n;
     int x = n % m_spritesPerRow,
         y = n / m_spritesPerRow;
     m_sprite.setTextureRect({x * m_spriteSize.x, y * m_spriteSize.y, m_spriteSize.x, m_spriteSize.y});

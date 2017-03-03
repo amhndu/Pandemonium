@@ -21,8 +21,11 @@ class ResourceManager
         {
             if (!m_instance)
                 m_instance.reset(new ResourceManager);
+            auto found = m_instance->m_resources.find(id);
+            if (found == m_instance->m_resources.end())
+                throw std::runtime_error("Resource not found");
 
-            return m_instance->m_resources[id];
+            return found->second;
         }
     private:
         std::map<Identifier, Resource> m_resources;

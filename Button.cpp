@@ -17,7 +17,6 @@ void Button::setText(const std::string& text)
     m_text.setColor(BUTTON_TEXT_COLOR);
     m_text.setCharacterSize(50);
     m_bg.setSize(sf::Vector2f(m_text.getGlobalBounds().width + 20, m_text.getGlobalBounds().height + 20));
-    auto p = m_bg.getSize();
     m_bg.setOrigin(0, -m_bg.getLocalBounds().height / 2 + 22);
     m_bg.setFillColor(BUTTON_BG_COLOR);
 }
@@ -77,7 +76,6 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     if (m_active)
     {
-        auto p = m_bg.getSize();
         target.draw(m_bg, states);
         target.draw(m_text, states);
     }

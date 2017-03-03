@@ -25,11 +25,16 @@ void GameObjectManager::handleEvent(const sf::Event& event)
 
 void GameObjectManager::update(float dt)
 {
-    for (auto go = m_objects.begin(); go != m_objects.end(); ++go)
+    for (auto go = m_objects.begin(); go != m_objects.end(); )
     {
         go->second->update(dt);
         for (auto other = std::next(go); other != m_objects.end(); ++other)
             go->second->handleCollision(*other->second);
+
+        if (go->second->toDestroy())
+            go = m_objects.erase(go);
+        else
+            ++go;
     }
 }
 
@@ -46,4 +51,9 @@ GameObject* GameObjectManager::insert(const std::string& key, GameObject* obj)
     if (res.second)
         return obj;
     return nullptr;
+}
+
+void GameObjectManager::clear()
+{
+    m_objects.clear();
 }

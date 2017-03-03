@@ -17,6 +17,7 @@ public:
     void handleEvent(const sf::Event& event);
     void render(sf::RenderTarget& target);
     void setActive(bool active);
+    void clear();
 private:
     std::map<std::string, std::unique_ptr<GameObject>> m_objects;
 };

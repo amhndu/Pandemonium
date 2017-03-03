@@ -26,7 +26,9 @@ public:
     virtual void setActive(bool active) = 0;
     virtual void handleCollision(GameObject& other) = 0;
     Type inline getType() { return m_type; };
+    virtual bool toDestroy() { return false; };
 
+protected:
     Type m_type;
     bool m_active;
 };
