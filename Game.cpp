@@ -19,13 +19,13 @@ Game::Game() :
     TextureManager::load(StartScreenBackground, "assets/startscreen.png");
     TextureManager::load(GameOverBackground, "assets/gameover.png");
     TextureManager::load(GameBackground, "assets/gamebackground.png");
-    
+
     //TODO
     //Load Cutscenes
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
     TextureManager::load(Bot1Sprite, "assets/emeny.png");
-    
-    
+
+
     m_window.setVerticalSyncEnabled(true);
 
     auto &startBtn = *static_cast<Button*>(m_startButtons.insert("start", new Button()));
@@ -40,8 +40,8 @@ Game::Game() :
 
     auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player()));
     player.setPosition(0, m_window.getSize().y - 300.f - 200);
-    
-    
+
+
     auto &bot1 = *static_cast<Enemy*>(m_gameObjects.insert("bot1", new Enemy()));
     bot1.setPosition(WINDOW_WIDTH - 100.f, m_window.getSize().y - 300.f);
 

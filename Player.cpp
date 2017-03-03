@@ -3,7 +3,8 @@
 #include "Constants.h"
 
 Player::Player() :
-    GameObject(PlayerObject)
+    GameObject(PlayerObject),
+    m_frameTimer(0)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {374, 810});
     m_sprite.setSpriteIndex(0);
@@ -56,29 +57,45 @@ void Player::update(float dt)
 {
     if (m_active)
     {
+        bool moving = false;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             m_position.x += PLAYER_VELOCITY * dt;
+            moving = true;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
             m_position.x += -PLAYER_VELOCITY * dt;
+            moving = true;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
              if (m_z > 0)
                 m_z += -Z_VELOCITY * dt;
+             moving = true;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
               if (m_z < 10)
                 m_z += Z_VELOCITY * dt;
+              moving = true;
         }
 
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
                                 m_position.y + d);
+
+        m_frameTimer += dt;
+        if (m_frameTimer > 0.01)
+        {
+            m_frameTimer -= 0.01;
+
+            ++m_frame;
+            if (m_frame >= 4)
+                m_frame = 0;
+            m_sprite.setSpriteIndex(m_frame);
+        }
     }
 }
 

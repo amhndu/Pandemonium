@@ -7,7 +7,7 @@ Enemy::Enemy():
 {
     m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
     m_sprite.setSpriteIndex(0);
-    m_sprite.setScale(200.f/ 810.f);
+    m_sprite.setScale(200.f/ 212.f);
 }
 
 
