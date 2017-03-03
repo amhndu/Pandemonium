@@ -25,6 +25,8 @@ private:
     float m_frameTimer;
     int m_frame;
     bool m_jumping;
+    int m_health;
+    int m_armour;
 };
 
 #endif // PLAYER_H

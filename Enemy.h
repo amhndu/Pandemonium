@@ -25,6 +25,8 @@ private:
     float m_frameTimer;
     int m_frame;
     Player& m_player;
+    int m_health;
+    int m_armour;
     
 };
 #endif // ENEMY_H

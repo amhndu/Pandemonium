@@ -6,7 +6,9 @@
 
 Enemy::Enemy(Player& player):
     GameObject(EnemyObject),
-    m_player(player)
+    m_player(player),
+    m_armour(MAX_ARMOUR),
+    m_health(MAX_HEALTH)
 {
     m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
     m_sprite.setSpriteIndex(0);
@@ -81,12 +83,12 @@ void Enemy::update(float dt)
 	  ;
         else if(m_player.getZ() - m_z > 0)
 	{
-	    m_z += Z_VELOCITY  * dt;
+	    m_z += 4 * Z_VELOCITY  * dt / 5;
 	    moving = true;
 	}
 	else if(m_player.getZ() - m_z < 0)
 	{
-	    m_z += -Z_VELOCITY * dt;
+	    m_z += -(4 * Z_VELOCITY * dt / 5);
 	    moving = true;
 	}
         

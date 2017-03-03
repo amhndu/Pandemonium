@@ -5,7 +5,9 @@
 Player::Player() :
     GameObject(PlayerObject),
     m_frameTimer(0),
-    m_jumping(false)
+    m_jumping(false),
+    m_armour(0),
+    m_health(MAX_HEALTH)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {374, 810});
     m_sprite.setSpriteIndex(0);
