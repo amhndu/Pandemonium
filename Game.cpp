@@ -144,7 +144,7 @@ void Game::waveSetup(Player& player)
                 ++m_enemies;
                 auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies), new Enemy(i.first, player)));
                 bot.setPosition(m_scene.getScene().spawnPoint.x + -50 + (rand() % 100),
-                                m_scene.getScene().spawnPoint.y + -50 + (rand() % 100) - PLAYER_HEIGHT); //FIXME
+                                m_scene.getScene().spawnPoint.y); //FIXME
             }
         }
     }
