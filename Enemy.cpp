@@ -58,5 +58,4 @@ void Enemy::update(float dt)
 void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(m_sprite);
-    std::cout<<"DSfs";
 }
