@@ -42,7 +42,7 @@ Game::Game() :
 
 
     auto &bot1 = *static_cast<Enemy*>(m_gameObjects.insert("bot1", new Enemy(player)));
-    bot1.setPosition(WINDOW_WIDTH - 100.f, m_window.getSize().y - 300.f);
+    bot1.setPosition(WINDOW_WIDTH - 100.f, m_window.getSize().y - LAND_APP_HEIGHT - 200);
 
     setState(Playing);
 //     setState(StartScreen);

@@ -1,7 +1,8 @@
 #include "Enemy.h"
 #include "ResourceManager.h"
 #include "Constants.h"
-#include<iostream>
+#include <iostream>
+#include <cmath>
 
 Enemy::Enemy(Player& player):
     GameObject(EnemyObject),
@@ -60,59 +61,40 @@ void Enemy::update(float dt)
     if (m_active)
     {
         bool moving = false;
-	/*
 	
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && m_sprite.getPosition().x < WINDOW_WIDTH)
-        {
-            m_position.x += PLAYER_VELOCITY * dt;
-            moving = true;
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_sprite.getPosition().x >= 0)
-        {
-            m_position.x += -PLAYER_VELOCITY * dt;
-            moving = true;
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_z >= 0)
-        {
-            m_z += -Z_VELOCITY * dt;
-            moving = true;
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_z < 10)
-        {
-            m_z += Z_VELOCITY * dt;
-            moving = true;
-        }*/
-        
-        
-        if(getPosition().x - m_player.getPosition().x > 0 + 10.f)
+        if (std::abs(m_player.getPosition().x - getPosition().x) < 10)
+	  moving = false;
+        else if(getPosition().x - m_player.getPosition().x > 0)
 	{
 	    m_position.x += -ENEMY_VELOCITY * dt;
 	    moving = true;
 	    m_sprite.setFlip(false);
 	}
-	else if(getPosition().x - m_player.getPosition().x < 0 + 10.f)
+	else if(getPosition().x - m_player.getPosition().x < 0)
 	{
 	    m_position.x += +ENEMY_VELOCITY * dt;
 	    moving = true;
 	    m_sprite.setFlip(true);
 	}
         
-        if(getPosition().y - m_player.getPosition().y > 0)
+        if (std::abs(m_player.getZ() - m_z) < 2)
+	  ;
+        else if(m_player.getZ() - m_z > 0)
 	{
-	    m_z += -Z_VELOCITY  * dt;
+	    m_z += Z_VELOCITY  * dt;
 	    moving = true;
 	}
-	else if(getPosition().y - m_player.getPosition().y < 0)
+	else if(m_player.getZ() - m_z < 0)
 	{
-	    m_z += Z_VELOCITY * dt;
+	    m_z += -Z_VELOCITY * dt;
 	    moving = true;
 	}
         
         
 
         float d = LAND_APP_HEIGHT * m_z / 10.f;
-        m_sprite.setPosition(m_position.x + d * LAND_SLOPE, m_position.y + d);
+        m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
+			     m_position.y + d);
 
         if (moving)
         {

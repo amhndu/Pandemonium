@@ -21,7 +21,7 @@ protected:
 private:
     SpriteSheet m_sprite;
     sf::Vector2f m_position;
-    int m_z;
+    float m_z;
     float m_frameTimer;
     int m_frame;
     Player& m_player;

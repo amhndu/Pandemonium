@@ -90,7 +90,7 @@ void Player::update(float dt)
 
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
-                                m_position.y + d);
+                             m_position.y + d);
 
         if (moving)
         {
