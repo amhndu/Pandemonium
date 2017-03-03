@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "Constants.h"
 #include<iostream>
+
 Enemy::Enemy():
     GameObject(EnemyObject)
 {

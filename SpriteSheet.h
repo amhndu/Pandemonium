@@ -11,6 +11,7 @@ public:
     void setPosition(float x, float y);
     sf::Vector2f getPosition();
     void setScale(float s);
+    void setFlip(bool flag);
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 private:
@@ -18,6 +19,7 @@ private:
     sf::Vector2i m_spriteSize;
     int m_index;
     int m_spritesPerRow;
+    bool m_flip;
 };
 
 #endif // SPRITESHEET_H
