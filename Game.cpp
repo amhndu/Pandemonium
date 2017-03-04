@@ -15,7 +15,7 @@ template<>
 std::unique_ptr<FontManager> FontManager::m_instance = nullptr;
 
 Game::Game() :
-    m_window(sf::VideoMode::getDesktopMode(), "Game Jam Entry"/*, sf::Style::Fullscreen*/),
+    m_window(sf::VideoMode::getDesktopMode(), "Game Jam Entry", sf::Style::Fullscreen),
     m_waveTimer(3.f)
 {
     FontManager::load(DefaultFont, "assets/font.ttf");
@@ -61,7 +61,7 @@ void Game::setState(GameState state)
 
             auto &exitBtn = *static_cast<Button*>(m_startButtons.insert("exit", new Button()));
             exitBtn.setText("Exit");
-            exitBtn.setPosition(20, 150);
+            exitBtn.setPosition(20, 180);
             exitBtn.setCallback([&](){ setState(Exit); });
 
             m_background.setTexture(TextureManager::get(StartScreenBackground));
@@ -77,8 +77,22 @@ void Game::setState(GameState state)
             m_activeObjects = &m_gameObjects;
             break;
         case Pause:
-            m_activeObjects = nullptr;
+        {
+            m_pauseButtons.clear();
+
+            auto &startBtn = *static_cast<Button*>(m_pauseButtons.insert("start", new Button()));
+            startBtn.setText("Resume");
+            startBtn.setPosition(20, 80);
+            startBtn.setCallback([&](){ setState(Playing); });
+
+            auto &exitBtn = *static_cast<Button*>(m_pauseButtons.insert("exit", new Button()));
+            exitBtn.setText("Exit");
+            exitBtn.setPosition(20, 180);
+            exitBtn.setCallback([&](){ setState(Exit); });
+
+            m_activeObjects = &m_pauseButtons;
             break;
+        }
         case GameOver:
         {
             m_endButtons.clear();
@@ -90,7 +104,7 @@ void Game::setState(GameState state)
 
             auto &exitBtn = *static_cast<Button*>(m_endButtons.insert("exit", new Button()));
             exitBtn.setText("Exit");
-            exitBtn.setPosition(20, 150);
+            exitBtn.setPosition(20, 180);
             exitBtn.setCallback([&](){ setState(Exit); });
 
             m_background.setTexture(TextureManager::get(GameOverBackground));
@@ -146,12 +160,18 @@ void Game::run()
         m_window.clear(sf::Color::White);
         m_window.draw(m_background);
 
+        if(m_state == Pause)
+        {
+            m_gameObjects.render(m_window);
+            m_window.draw(overlay);
+            m_window.draw(m_pauseIcon);
+        }
         // Update/Draw
         if (m_activeObjects)
         {
             float dt = m_timer.restart().asSeconds();
-            
-            
+
+
             m_activeObjects->update(dt);
             m_activeObjects->render(m_window);
 
@@ -159,7 +179,7 @@ void Game::run()
             {
                 if (m_waveTimer > 0)
                     m_waveTimer -= dt;
-                
+
                 if (m_waveTimer <= 0)
                 {
                     if (!m_scene.nextWave())
@@ -176,12 +196,7 @@ void Game::run()
                 }
             }
         }
-        else if(m_state == Pause)
-        {
-            m_gameObjects.render(m_window);
-            m_window.draw(overlay);
-            m_window.draw(m_pauseIcon);
-        }
+
 
 
         m_window.display();
@@ -223,7 +238,7 @@ void Game::waveSetup(Player& player)
             bot.setDeathCallback([&](){ enemyDeathCallback(); } );
         }
     }
-       
+
 }
 
 void Game::enemyDeathCallback()

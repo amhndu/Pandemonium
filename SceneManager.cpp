@@ -13,7 +13,7 @@ SceneManager::SceneManager()
                     EntranceSceneBG,
                     std::move(waves),
                     WINDOW_WIDTH - 100,
-                    WINDOW_WIDTH - 200
+                    WINDOW_WIDTH - 300
                 });
 
     // Scene 2: Ruin

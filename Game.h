@@ -30,10 +30,11 @@ private:
 
     GameObjectManager m_startButtons;
     GameObjectManager m_gameObjects;
+    GameObjectManager m_pauseButtons;
     GameObjectManager m_endButtons;
     GameObjectManager *m_activeObjects;
-    
-    
+
+
     SceneManager m_scene;
     int m_enemies;
 
@@ -44,13 +45,13 @@ private:
     sf::RenderWindow m_window;
     sf::Sprite m_background;
     GameState m_state;
-    
+
     float m_waveTimer;
-    
+
     sf::Clock m_timer;
     sf::Sprite m_pauseIcon;
     sf::RectangleShape overlay;
-    
+
 };
 
 #endif // GAME_H
