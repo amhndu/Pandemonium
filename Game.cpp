@@ -159,7 +159,7 @@ void Game::sceneSetup()
     m_state = Playing;
     m_gameObjects.clear();
     auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player(m_gameObjects)));
-    player.setPosition(100, m_window.getSize().y - LAND_APP_HEIGHT);
+    player.setPosition(130, m_window.getSize().y - LAND_APP_HEIGHT);
     player.setZ(5);
     player.setDeathCallback([&](){ setState(GameOver); });
 
@@ -184,9 +184,6 @@ void Game::waveSetup(Player& player)
                                 (rand() / (float)RAND_MAX)  * (m_scene.getScene().spawnXEnd - m_scene.getScene().spawnXBeg),
                             m_window.getSize().y - LAND_APP_HEIGHT);
             float z = (10.f/p.second)*j + rand()%(10/p.second);
-//         int z = rand()%(pw-50) + pw*i + 25; //place tank within the ith part within a padding of 25pixels on both sides
-//         pTank->setPosition(sf::Vector2f(x,constants::windowHeight-getLandHeight(x)-10));
-
             bot.setZ(z);
             bot.setDeathCallback([&](){ enemyDeathCallback(); } );
         }

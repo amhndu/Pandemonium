@@ -123,8 +123,11 @@ void Enemy::update(float dt)
         }
 
 
-        if (std::abs(m_player.getZ() - m_z) < 1.5f || std::abs(m_player.getPosition().x - getPosition().x) >= 200.f)
-            inbounds = inbounds && true;
+        if (std::abs(m_player.getZ() - m_z) < 2.f || std::abs(m_player.getPosition().x - getPosition().x) >= 200.f)
+        {
+            if (std::abs(m_player.getZ() - m_z) <= 1.f)
+                inbounds = inbounds && true;
+        }
         else if(m_player.getZ() - m_z > 0)
         {
             m_z += 2.f * Z_VELOCITY  * dt / 5.f;
@@ -144,7 +147,7 @@ void Enemy::update(float dt)
         m_fill.setSize(sf::Vector2f(m_health , 10));
 
         m_attackTimer += dt;
-        if (inbounds && m_attackTimer > 1.f)
+        if (inbounds && m_attackTimer > 1.5f)
         {
             // Attack player
             m_player.inflictDamage(10);
