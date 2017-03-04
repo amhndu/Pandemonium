@@ -44,6 +44,11 @@ private:
     sf::RenderWindow m_window;
     sf::Sprite m_background;
     GameState m_state;
+    
+    sf::Clock m_timer;
+    sf::Sprite m_pauseIcon;
+    sf::RectangleShape overlay;
+    
 };
 
 #endif // GAME_H

@@ -163,7 +163,10 @@ void Player::update(float dt)
             }
             m_sprite.setFlip(m_flip);
         }
-
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            
+        }
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
                              m_position.y + d);

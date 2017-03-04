@@ -6,6 +6,7 @@ enum TextureIdentifier
 {
     Placeholder,
     StartScreenBackground,
+    PauseBackground,
     EntranceSceneBG,
     RuinSceneBG,
     GameOverBackground,
