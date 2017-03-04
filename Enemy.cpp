@@ -85,7 +85,10 @@ void Enemy::update(float dt)
             m_sprite.setFlip(true);
         }
 
-        if (std::abs(m_player.getZ() - m_z) < 2)
+        
+        
+        
+        if (std::abs(m_player.getZ() - m_z) < 2 || std::abs(m_player.getPosition().x - getPosition().x) >= 40.f)
             ;
         else if(m_player.getZ() - m_z > 0)
         {
@@ -97,6 +100,8 @@ void Enemy::update(float dt)
             m_z += -(3.f * Z_VELOCITY * dt / 5.f);
             moving = true;
         }
+        
+        
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
                                 m_position.y + d);
