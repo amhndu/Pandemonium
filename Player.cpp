@@ -8,7 +8,7 @@ Player::Player(GameObjectManager& gom) :
     GameObject(PlayerObject),
     m_frameTimer(0),
     m_health(MAX_HEALTH),
-    m_animationframe({{0,1,0,2}, {0,3,3}, {0,5,6}, {0,7,8}}),
+    m_animationframe({{0,1,0,2}, {0,5,4}, {0,6,4}, {0,7,4}}),
     m_currentAnimation(0),
     m_attacking(false),
     m_gameObjects(gom),
@@ -16,9 +16,9 @@ Player::Player(GameObjectManager& gom) :
     m_flip(false),
     m_colliding(false)
 {
-    m_sprite.setTexture(TextureManager::get(PlayerSprite), {/**374, 810**/540,540});
+    m_sprite.setTexture(TextureManager::get(PlayerSprite), {120, 200});
     m_sprite.setSpriteIndex(0);
-    m_sprite.setScale(200.f/ /**810.f**/540.f);
+    //m_sprite.setScale(200.f/ /**810.f**/540.f);
 }
 
 
@@ -121,7 +121,7 @@ void Player::update(float dt)
         }
 
         bool moving = false;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
         {
             moving = false;
             if (!m_attacking)
