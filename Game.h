@@ -45,6 +45,8 @@ private:
     sf::Sprite m_background;
     GameState m_state;
     
+    float m_waveTimer;
+    
     sf::Clock m_timer;
     sf::Sprite m_pauseIcon;
     sf::RectangleShape overlay;
