@@ -15,7 +15,8 @@ template<>
 std::unique_ptr<FontManager> FontManager::m_instance = nullptr;
 
 Game::Game() :
-    m_window(sf::VideoMode::getDesktopMode(), "Game Jam Entry"/*, sf::Style::Fullscreen*/)
+    m_window(sf::VideoMode::getDesktopMode(), "Game Jam Entry"/*, sf::Style::Fullscreen*/),
+    m_waveTimer(3.f)
 {
     FontManager::load(DefaultFont, "assets/font.ttf");
 
@@ -23,7 +24,7 @@ Game::Game() :
     TextureManager::load(GameOverBackground, "assets/gameover.png");
     TextureManager::load(EntranceSceneBG, "assets/gamebackground.png");
     TextureManager::load(RuinSceneBG, "assets/gamebackground.png");
-    TextureManager::load(PauseBackground, "assets/pause.png");
+    TextureManager::load(PauseIcon, "assets/pause.png");
     //TODO
     //Load Cutscenes
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
@@ -37,7 +38,7 @@ Game::Game() :
 
     overlay.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     overlay.setFillColor(sf::Color(0x50505050));
-    m_pauseIcon.setTexture(TextureManager::get(PauseBackground));
+    m_pauseIcon.setTexture(TextureManager::get(PauseIcon));
     m_pauseIcon.setOrigin(m_pauseIcon.getGlobalBounds().width / 2.f, m_pauseIcon.getGlobalBounds().height / 2.f);
     m_pauseIcon.setPosition(m_window.getSize().x / 2.f, m_window.getSize().y / 2.f);
     newGame();
@@ -148,20 +149,31 @@ void Game::run()
         // Update/Draw
         if (m_activeObjects)
         {
-            m_activeObjects->update(m_timer.restart().asSeconds());
+            float dt = m_timer.restart().asSeconds();
+            
+            
+            m_activeObjects->update(dt);
             m_activeObjects->render(m_window);
 
             if (m_state == Playing && m_enemies <= 0)
             {
-                if (!m_scene.nextWave())
+                if (m_waveTimer > 0)
+                    m_waveTimer -= dt;
+                
+                if (m_waveTimer <= 0)
                 {
-                    if (m_scene.nextScene())
-                        sceneSetup();
+                    if (!m_scene.nextWave())
+                    {
+                        if (m_scene.nextScene())
+                        {
+                            sceneSetup();
+                        }
+                        else
+                            setState(GameOver);
+                    }
                     else
-                        setState(GameOver);
+                        waveSetup(static_cast<Player&>(*m_gameObjects.get("player")));
                 }
-                else
-                    waveSetup(static_cast<Player&>(*m_gameObjects.get("player")));
             }
         }
         else if(m_state == Pause)
@@ -194,6 +206,7 @@ void Game::sceneSetup()
 
 void Game::waveSetup(Player& player)
 {
+    m_waveTimer = 3.f;
     m_enemies = 0;
     const SceneManifest::EnemySwarm& swarm = m_scene.getWave();
     for (const auto& p : swarm)
@@ -210,6 +223,7 @@ void Game::waveSetup(Player& player)
             bot.setDeathCallback([&](){ enemyDeathCallback(); } );
         }
     }
+       
 }
 
 void Game::enemyDeathCallback()
