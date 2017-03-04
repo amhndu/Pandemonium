@@ -177,7 +177,7 @@ void Game::waveSetup(Player& player)
             bot.setPosition(m_scene.getScene().spawnXBeg +
                                 (rand() / (float)RAND_MAX)  * (m_scene.getScene().spawnXEnd - m_scene.getScene().spawnXBeg),
                             m_window.getSize().y - LAND_APP_HEIGHT);
-            float z = (10.f/p.second)*j;
+            float z = (10.f/p.second)*j + rand()%(10/p.second);
 //         int z = rand()%(pw-50) + pw*i + 25; //place tank within the ith part within a padding of 25pixels on both sides
 //         pTank->setPosition(sf::Vector2f(x,constants::windowHeight-getLandHeight(x)-10));
 
