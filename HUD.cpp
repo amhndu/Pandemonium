@@ -11,7 +11,7 @@ HUD::HUD(Player& player) :
 {
     m_text.setString("Health :");
     m_text.setFont(FontManager::get(DefaultFont));
-    m_text.setColor(sf::Color::Black);
+    m_text.setColor(sf::Color::White);
     m_text.setCharacterSize(20);
 
     m_bg.setSize(sf::Vector2f(100, 10));

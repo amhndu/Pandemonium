@@ -46,6 +46,7 @@ private:
     bool m_colliding;
     GameObjectManager &m_gameObjects;
     bool m_flip;
+    float m_redTimer;
     std::function<void(void)> m_cb;
 };
 

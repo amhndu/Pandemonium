@@ -14,11 +14,11 @@ Player::Player(GameObjectManager& gom) :
     m_gameObjects(gom),
     m_frame(0),
     m_flip(false),
+    m_redTimer(0),
     m_colliding(false)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {120, 200});
     m_sprite.setSpriteIndex(0);
-    //m_sprite.setScale(200.f/ /**810.f**/540.f);
 }
 
 
@@ -108,6 +108,8 @@ void Player::inflictDamage(int damage)
     m_health -= damage;
     if (m_health <= 0)
         m_cb();
+    m_redTimer = 0.3f;
+    m_sprite.setColor(sf::Color::Red);
 }
 
 void Player::update(float dt)
@@ -118,6 +120,13 @@ void Player::update(float dt)
         {
             m_health += 5 * dt;
             m_health = std::min(MAX_HEALTH, m_health);
+        }
+
+        if (m_redTimer > 0)
+        {
+            m_redTimer -= dt;
+            if (m_redTimer <= 0)
+                m_sprite.setColor(sf::Color::White);
         }
 
         bool moving = false;
@@ -131,8 +140,7 @@ void Player::update(float dt)
                 else
                     ++m_currentAnimation;
                 m_attacking = true;
-                m_gameObjects.foreach([&](GameObject& g){
-                            if (g.getType() == EnemyObject) attackEnemy(static_cast<Enemy&>(g));});
+
             }
 
         }
@@ -188,7 +196,11 @@ void Player::update(float dt)
                 {
                     m_frame = 0;
                     if (m_attacking)
+                    {
+                        m_gameObjects.foreach([&](GameObject& g){
+                            if (g.getType() == EnemyObject) attackEnemy(static_cast<Enemy&>(g));});
                         m_attacking = false;
+                    }
                 }
             }
             m_sprite.setSpriteIndex(m_animationframe[m_currentAnimation][m_frame]);

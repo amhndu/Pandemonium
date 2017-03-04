@@ -13,6 +13,7 @@ public:
     void setScale(float s);
     void setFlip(bool flag);
     sf::FloatRect getGlobalBounds();
+    void setColor(sf::Color color);
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 private:

@@ -27,6 +27,8 @@ Game::Game() :
     //Load Cutscenes
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
     TextureManager::load(Bot1Sprite, "assets/enemy.png");
+    TextureManager::load(Bot2Sprite, "assets/enemy.png");
+    TextureManager::load(Bot3Sprite, "assets/enemy.png");
 
     m_window.setVerticalSyncEnabled(true);
 

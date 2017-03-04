@@ -12,6 +12,7 @@ class Enemy : public GameObject
 public:
     enum Type
     {
+        DamagedEasy,
         Easy,
         Medium,
         Hard
@@ -26,7 +27,7 @@ public:
     bool toDestroy() override;
 
     void setZ(float z);
-    int getHealth();
+    float getHealth();
 
     sf::FloatRect getGlobalBounds();
     float getZ();
@@ -46,6 +47,8 @@ private:
     int m_frame;
     Player& m_player;
     int m_health;
+    int m_maxHealth;
+    int m_attackDamage;
     GameObjectManager *m_gameObjects;
     sf::RectangleShape m_bg;
     sf::RectangleShape m_fill;

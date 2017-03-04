@@ -11,6 +11,11 @@ void SpriteSheet::setTexture(sf::Texture& texture, sf::Vector2i size)
     m_index = 0;
 }
 
+void SpriteSheet::setColor(sf::Color color)
+{
+    m_sprite.setColor(color);
+}
+
 void SpriteSheet::setPosition(float x, float y)
 {
     m_sprite.setPosition(x, y);

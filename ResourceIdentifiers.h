@@ -12,7 +12,7 @@ enum TextureIdentifier
     PlayerSprite,
     Bot1Sprite,
     Bot2Sprite,
-    BotBossSpirte,
+    Bot3Sprite,
     Cutscene1,
     Cutscene2,
     Cutscene3

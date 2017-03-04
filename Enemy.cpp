@@ -11,12 +11,34 @@ Enemy::Enemy(Type type, Player& player):
     m_attackTimer(0),
     m_player(player),
     m_type(type),
-    m_health(MAX_HEALTH),
+    m_health(0),
     m_bg(sf::Vector2f(100.f,5)),
     m_fill(sf::Vector2f())
 {
-    //TODO type
-    m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
+    switch (m_type)
+    {
+        case DamagedEasy:
+        case Easy:
+            m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
+            m_health = 40;
+            m_attackDamage = 10;
+            break;
+        case Medium:
+            m_sprite.setTexture(TextureManager::get(Bot2Sprite), {100, 212});
+            m_health = 60;
+            m_attackDamage = 20;
+            break;
+        case Hard:
+            m_sprite.setTexture(TextureManager::get(Bot3Sprite), {100, 212});
+            m_health = 100;
+            m_attackDamage = 30;
+            break;
+    }
+
+    m_maxHealth = m_health;
+    if (m_type == DamagedEasy)
+        m_health = m_health / 2;
+
     m_sprite.setSpriteIndex(0);
     m_sprite.setScale(200.f/ 212.f);
 
@@ -145,13 +167,13 @@ void Enemy::update(float dt)
                                 m_position.y + d);
         m_bg.setPosition(m_sprite.getPosition() - sf::Vector2f(0, 200) );
         m_fill.setPosition(m_sprite.getPosition() - sf::Vector2f(0, 200));
-        m_fill.setSize(sf::Vector2f(m_health , 10));
+        m_fill.setSize(sf::Vector2f(getHealth() * 100, 10));
 
         m_attackTimer += dt;
         if (inbounds && m_attackTimer > 1.5f)
         {
             // Attack player
-            m_player.inflictDamage(10);
+            m_player.inflictDamage(m_attackDamage);
 
             m_attackTimer = 0;
         }
@@ -183,9 +205,9 @@ bool Enemy::toDestroy()
 }
 
 
-int Enemy::getHealth()
+float Enemy::getHealth()
 {
-    return m_health;
+    return static_cast<float>(m_health) / m_maxHealth;
 }
 
 
