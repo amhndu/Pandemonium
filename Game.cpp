@@ -27,8 +27,8 @@ Game::Game() :
     //TODO
     //Load Cutscenes
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
-    TextureManager::load(Bot1Sprite, "assets/enemy.png");
-    TextureManager::load(Bot2Sprite, "assets/enemy.png");
+    TextureManager::load(Bot1Sprite, "assets/bot1sprite.png");
+    TextureManager::load(Bot2Sprite, "assets/bot2sprite.png");
     TextureManager::load(Bot3Sprite, "assets/enemy.png");
 
     m_window.setVerticalSyncEnabled(true);
@@ -117,21 +117,21 @@ void Game::run()
         {
             if (event.type == sf::Event::Closed)
                 m_window.close();
-            
+
             if (m_state == Playing && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
                 setState(Pause);
             else if (m_state == Pause && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
                 setState(Playing);
-            
+
             if (m_activeObjects)
-            {   
+            {
                 if (event.type == sf::Event::LostFocus)
                     m_activeObjects->setActive(false);
                 else if (event.type == sf::Event::GainedFocus)
                     m_activeObjects->setActive(true);
                 m_activeObjects->handleEvent(event);
             }
-            
+
 
             if (m_state == Cutscene && event.type == sf::Event::KeyReleased)
             {
@@ -170,7 +170,7 @@ void Game::run()
             m_window.draw(overlay);
             m_window.draw(m_pauseIcon);
         }
-        
+
 
         m_window.display();
     }

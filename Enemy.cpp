@@ -9,6 +9,7 @@ Enemy::Enemy(Type type, Player& player):
     m_frame(0),
     m_frameTimer(0),
     m_attackTimer(0),
+    m_stunTimer(0),
     m_player(player),
     m_type(type),
     m_health(0),
@@ -19,12 +20,12 @@ Enemy::Enemy(Type type, Player& player):
     {
         case DamagedEasy:
         case Easy:
-            m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
+            m_sprite.setTexture(TextureManager::get(Bot1Sprite), {60, 200});
             m_health = 40;
             m_attackDamage = 10;
             break;
         case Medium:
-            m_sprite.setTexture(TextureManager::get(Bot2Sprite), {100, 212});
+            m_sprite.setTexture(TextureManager::get(Bot2Sprite), {120, 100});
             m_health = 60;
             m_attackDamage = 20;
             break;
@@ -110,6 +111,8 @@ float Enemy::getZ()
 bool Enemy::inflictDamage(int damage)
 {
     m_health -= damage;
+    m_stunTimer = 0.3f;
+    m_sprite.setColor(sf::Color::Red);
     return m_health <= 0;
 }
 
@@ -122,6 +125,13 @@ void Enemy::update(float dt)
 {
     if (m_active)
     {
+        if (m_stunTimer > 0)
+        {
+            m_stunTimer -= dt;
+            if (m_stunTimer <= 0)
+                m_sprite.setColor(sf::Color::White);
+        }
+
         bool moving = false;
         bool inbounds = std::abs(m_player.getPosition().x - getPosition().x) <
             std::max(PLAYER_WIDTH, m_sprite.getGlobalBounds().width);
@@ -170,11 +180,10 @@ void Enemy::update(float dt)
         m_fill.setSize(sf::Vector2f(getHealth() * 100, 10));
 
         m_attackTimer += dt;
-        if (inbounds && m_attackTimer > 1.5f)
+        if (m_stunTimer <= 0 && inbounds && m_attackTimer > 1.5f)
         {
-            // Attack player
             m_player.inflictDamage(m_attackDamage);
-
+            // Attack player
             m_attackTimer = 0;
         }
 
@@ -186,8 +195,8 @@ void Enemy::update(float dt)
                 m_frameTimer -= ANIM_FRAME_TIME;
 
                 ++m_frame;
-                if (m_frame >= 8)
-                    m_frame = 1;
+                if (m_frame >= 3)
+                    m_frame = 0;
             }
         }
         else

@@ -44,6 +44,7 @@ private:
     float m_z;
     float m_frameTimer;
     float m_attackTimer;
+    float m_stunTimer;
     int m_frame;
     Player& m_player;
     int m_health;
