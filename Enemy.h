@@ -24,10 +24,13 @@ public:
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
     bool toDestroy() override;
-    void setZ(int z);
 
+    sf::FloatRect getGlobalBounds();
+    void setZ(int z);
+    float getZ();
     template <typename Callable>
     void setDeathCallback(Callable f){ m_deathCallback = f; };
+    void inflictDamage(int damage);
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
@@ -40,6 +43,6 @@ private:
     int m_frame;
     Player& m_player;
     int m_health;
-
+    GameObjectManager *m_gameObjects;
 };
 #endif // ENEMY_H

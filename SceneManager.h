@@ -25,7 +25,7 @@ class SceneManager
 public:
     SceneManager();
     const SceneManifest& getScene();
-    std::size_t getWave();
+    SceneManifest::EnemySwarm getWave();
     void restart();
     bool nextScene();
     bool nextWave();

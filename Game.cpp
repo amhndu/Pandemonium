@@ -20,7 +20,7 @@ Game::Game() :
     TextureManager::load(StartScreenBackground, "assets/startscreen.png");
     TextureManager::load(GameOverBackground, "assets/gameover.png");
     TextureManager::load(EntranceSceneBG, "assets/gamebackground.png");
-
+    TextureManager::load(RuinSceneBG, "assets/gamebackground.png");
     //TODO
     //Load Cutscenes
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
@@ -28,32 +28,33 @@ Game::Game() :
 
     m_window.setVerticalSyncEnabled(true);
 
-    auto &startBtn = *static_cast<Button*>(m_startButtons.insert("start", new Button()));
-    startBtn.setText("Start Game");
-    startBtn.setPosition(20, 80);
-    startBtn.setCallback([&](){ setState(Playing); });
-
-    auto &exitBtn = *static_cast<Button*>(m_startButtons.insert("exit", new Button()));
-    exitBtn.setText("Exit");
-    exitBtn.setPosition(20, 150);
-    exitBtn.setCallback([&](){ setState(Exit); });
-
     srand(std::time(nullptr));
 
-    setState(Playing);
-    newGame();
-//     setState(StartScreen);
+    setState(StartScreen);
 }
 
 void Game::setState(GameState state)
 {
+    std::cout << state << std::endl;
     m_state = state;
     switch (m_state)
     {
         case StartScreen:
+        {
+            auto &startBtn = *static_cast<Button*>(m_startButtons.insert("start", new Button()));
+            startBtn.setText("Start Game");
+            startBtn.setPosition(20, 80);
+            startBtn.setCallback([&](){ newGame(); });
+
+            auto &exitBtn = *static_cast<Button*>(m_startButtons.insert("exit", new Button()));
+            exitBtn.setText("Exit");
+            exitBtn.setPosition(20, 150);
+            exitBtn.setCallback([&](){ setState(Exit); });
+
             m_background.setTexture(TextureManager::get(StartScreenBackground));
             m_activeObjects = &m_startButtons;
             break;
+        }
         case Cutscene:
             m_background.setTexture(TextureManager::get(Cutscene1));
             m_activeObjects = nullptr;
@@ -64,14 +65,27 @@ void Game::setState(GameState state)
         case Pause:
             break;
         case GameOver:
+        {
+            auto &startBtn = *static_cast<Button*>(m_endButtons.insert("start", new Button()));
+            startBtn.setText("Play Again");
+            startBtn.setPosition(20, 80);
+            startBtn.setCallback([&](){ newGame(); });
+
+            auto &exitBtn = *static_cast<Button*>(m_endButtons.insert("exit", new Button()));
+            exitBtn.setText("Exit");
+            exitBtn.setPosition(20, 150);
+            exitBtn.setCallback([&](){ setState(Exit); });
+
             m_background.setTexture(TextureManager::get(GameOverBackground));
             m_activeObjects = &m_endButtons;
             break;
+        }
     }
 }
 
 void Game::newGame()
 {
+    setState(Playing);
     m_cutscene = 0;
     m_gameObjects.clear();
     m_scene.restart();
@@ -115,6 +129,19 @@ void Game::run()
         {
             m_activeObjects->update(m_timer.restart().asSeconds());
             m_activeObjects->render(m_window);
+
+            if (m_state == Playing && m_enemies <= 0)
+            {
+                if (!m_scene.nextWave())
+                {
+                    if (m_scene.nextScene())
+                        sceneSetup();
+                    else
+                        setState(GameOver);
+                }
+                else
+                    waveSetup(static_cast<Player&>(*m_gameObjects.get("player")));
+            }
         }
 
         m_window.display();
@@ -124,7 +151,8 @@ void Game::run()
 void Game::sceneSetup()
 {
     m_state = Playing;
-    auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player()));
+    m_gameObjects.clear();
+    auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player(m_gameObjects)));
     player.setPosition(100, m_window.getSize().y - LAND_APP_HEIGHT);
     player.setZ(5);
 
@@ -136,19 +164,18 @@ void Game::sceneSetup()
 void Game::waveSetup(Player& player)
 {
     m_enemies = 0;
-    for (const SceneManifest::EnemySwarm& swarm : m_scene.getScene().waves)
+    const SceneManifest::EnemySwarm& swarm = m_scene.getWave();
+    for (const auto& i : swarm)
     {
-        for (const auto& i : swarm)
+        for (int j = 0; j < i.second; ++j)
         {
-            for (int j = 0; j < i.second; ++j)
-            {
-                ++m_enemies;
-                auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies), new Enemy(i.first, player)));
-                bot.setPosition(m_scene.getScene().spawnXBeg +
-                                   (rand() / (float)RAND_MAX)  * (m_scene.getScene().spawnXEnd - m_scene.getScene().spawnXBeg),
-                                m_window.getSize().y - LAND_APP_HEIGHT);
-                bot.setZ(rand() % 10);
-            }
+            ++m_enemies;
+            auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies), new Enemy(i.first, player)));
+            bot.setPosition(m_scene.getScene().spawnXBeg +
+                                (rand() / (float)RAND_MAX)  * (m_scene.getScene().spawnXEnd - m_scene.getScene().spawnXBeg),
+                            m_window.getSize().y - LAND_APP_HEIGHT);
+            bot.setZ(rand() % 10);
+            bot.setDeathCallback([&](){ enemyDeathCallback(); } );
         }
     }
 }
@@ -156,18 +183,5 @@ void Game::waveSetup(Player& player)
 void Game::enemyDeathCallback()
 {
     --m_enemies;
-
-    if (m_enemies <= 0)
-    {
-        if (!m_scene.nextWave())
-        {
-            if (m_scene.nextScene())
-                sceneSetup();
-            else
-                m_state = GameOver;
-        }
-        else
-            waveSetup(static_cast<Player&>(*m_gameObjects.get("player")));
-    }
 }
 

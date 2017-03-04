@@ -7,6 +7,7 @@
 Enemy::Enemy(Type type, Player& player):
     GameObject(EnemyObject),
     m_frame(0),
+    m_frameTimer(0),
     m_player(player),
     m_type(type),
     m_health(MAX_HEALTH)
@@ -17,6 +18,11 @@ Enemy::Enemy(Type type, Player& player):
     m_sprite.setScale(200.f/ 212.f);
 }
 
+sf::FloatRect Enemy::getGlobalBounds()
+{
+    return m_sprite.getGlobalBounds();
+}
+
 
 void Enemy::handleCollision(GameObject& other)
 {
@@ -25,7 +31,7 @@ void Enemy::handleCollision(GameObject& other)
         case Button:
             break;
         case PlayerObject:
-            // Do something
+            other.handleCollision(*this);
             break;
         case EnemyObject:
             // Do nothing ?
@@ -60,6 +66,16 @@ void Enemy::setZ(int z)
                          m_position.y + d);
 }
 
+float Enemy::getZ()
+{
+    return m_z;
+}
+
+void Enemy::inflictDamage(int damage)
+{
+    m_health -= damage;
+}
+
 void Enemy::handleEvent(const sf::Event& event)
 {
 
@@ -85,23 +101,22 @@ void Enemy::update(float dt)
             m_sprite.setFlip(true);
         }
 
-        
-        
-        
+
+
         if (std::abs(m_player.getZ() - m_z) < 2 || std::abs(m_player.getPosition().x - getPosition().x) >= 40.f)
             ;
         else if(m_player.getZ() - m_z > 0)
         {
-            m_z += 3.f * Z_VELOCITY  * dt / 5.f;
+            m_z += 2.f * Z_VELOCITY  * dt / 5.f;
             moving = true;
         }
         else if(m_player.getZ() - m_z < 0)
         {
-            m_z += -(3.f * Z_VELOCITY * dt / 5.f);
+            m_z += -(2.f * Z_VELOCITY * dt / 5.f);
             moving = true;
         }
-        
-        
+
+
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
                                 m_position.y + d);
@@ -121,18 +136,15 @@ void Enemy::update(float dt)
         else
             m_frame = 0;
         m_sprite.setSpriteIndex(m_frame);
-
-        if (m_health <= 0)
-        {
-            m_deathCallback();
-            m_active = false;
-        }
     }
 }
 
 bool Enemy::toDestroy()
 {
-    return m_health <= 0;
+    bool flag = m_health <= 0;
+    if (flag)
+        m_deathCallback();
+    return flag;
 }
 
 

@@ -1,14 +1,17 @@
 #include "Player.h"
 #include "ResourceManager.h"
 #include "Constants.h"
+#include "Enemy.h"
 
-Player::Player() :
+Player::Player(GameObjectManager& gom) :
     GameObject(PlayerObject),
     m_frameTimer(0),
     m_health(MAX_HEALTH),
-    m_animationframe({{0,1,0,2},{0,3,3},{0,5,6},{0,7,8}}),
+    m_animationframe({{0,1,0,2}, {0,3,3}, {0,5,6}, {0,7,8}}),
     m_currentAnimation(0),
-    m_attacking(false)
+    m_attacking(false),
+    m_gameObjects(gom),
+    m_frame(0)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {/**374, 810**/540,540});
     m_sprite.setSpriteIndex(0);
@@ -26,8 +29,6 @@ void Player::handleCollision(GameObject& other)
             // This really should just never happen
             break;
         case EnemyObject:
-            // See if we're trying to hit something. Or possibly, let the enemy object handle this
-            // as it'd have to inflict damage upon it
             break;
         case Projectile:
             // If colliding, then reduce armor/health
@@ -69,12 +70,26 @@ void Player::handleEvent(const sf::Event& event)
 
 }
 
+
+void Player::attackEnemy(Enemy& enemy)
+{
+    // FIXME proper collision detection
+    sf::FloatRect weaponextension = m_sprite.getGlobalBounds();
+    weaponextension.left += weaponextension.width * 3.f / 4.f;
+    weaponextension.width *= 1.f / 4.f;
+
+    if (std::abs(m_z - enemy.getZ()) < 3.f && weaponextension.intersects(enemy.getGlobalBounds()))
+    {
+        enemy.inflictDamage(100);
+    }
+}
+
 void Player::update(float dt)
 {
     if (m_active)
     {
         bool moving = false;
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             moving = false;
             if (!m_attacking)
@@ -84,10 +99,12 @@ void Player::update(float dt)
                 else
                     ++m_currentAnimation;
                 m_attacking = true;
+                m_gameObjects.foreach([&](GameObject& g){
+                            if (g.getType() == EnemyObject) attackEnemy(static_cast<Enemy&>(g));});
             }
 
         }
-        else
+        else if (!m_colliding)
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && m_sprite.getPosition().x < WINDOW_WIDTH)
             {

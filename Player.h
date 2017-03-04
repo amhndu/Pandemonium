@@ -3,13 +3,16 @@
 
 #include "GameObject.h"
 #include "SpriteSheet.h"
+#include "GameObjectManager.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
+
+class Enemy;
 
 class Player : public GameObject
 {
 public:
-    Player();
+    Player(GameObjectManager& gom);
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;
@@ -21,6 +24,8 @@ public:
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
+    void attackEnemy(Enemy& enemy);
+
     SpriteSheet m_sprite;
     sf::Vector2f m_position;
     float m_z;
@@ -31,7 +36,8 @@ private:
     std::size_t m_currentAnimation;
     std::size_t m_frame;
     bool m_attacking;
-
+    bool m_colliding;
+    GameObjectManager &m_gameObjects;
 };
 
 #endif // PLAYER_H

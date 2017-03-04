@@ -1,5 +1,4 @@
 #include "GameObjectManager.h"
-
 #include <iostream>
 
 void GameObjectManager::render(sf::RenderTarget& target)

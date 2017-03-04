@@ -12,6 +12,7 @@ public:
     sf::Vector2f getPosition();
     void setScale(float s);
     void setFlip(bool flag);
+    sf::FloatRect getGlobalBounds();
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 private:

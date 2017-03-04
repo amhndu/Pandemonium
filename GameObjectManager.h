@@ -18,6 +18,13 @@ public:
     void render(sf::RenderTarget& target);
     void setActive(bool active);
     void clear();
+
+    template <typename Callable>
+    void foreach(Callable c)
+    {
+        for (auto &p : m_objects)
+            c(*p.second);
+    }
 private:
     std::map<std::string, std::unique_ptr<GameObject>> m_objects;
 };

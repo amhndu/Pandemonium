@@ -12,7 +12,7 @@
 #define Z_VELOCITY          5.f
 #define PLAYER_HEIGHT       200.f
 #define PLAYER_WIDTH        92.f
-#define PLAYER_VELOCITY     100.f
+#define PLAYER_VELOCITY     500.f
 #define ENEMY_VELOCITY      40.f
 #define LAND_APP_HEIGHT     300.f      /* Apparent height */
 #define LAND_SLOPE          -200.f / 300.f

@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Constants.h"
+#include <iostream>
 
 SceneManager::SceneManager()
 {
@@ -69,8 +70,8 @@ void SceneManager::restart()
     m_currentWave = 0;
 }
 
-std::size_t SceneManager::getWave()
+SceneManifest::EnemySwarm SceneManager::getWave()
 {
-    return m_currentWave;
+    return m_currentScene->second.waves[m_currentWave];
 }
 

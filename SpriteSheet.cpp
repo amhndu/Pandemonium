@@ -16,6 +16,11 @@ void SpriteSheet::setPosition(float x, float y)
     m_sprite.setPosition(x, y);
 }
 
+sf::FloatRect SpriteSheet::getGlobalBounds()
+{
+    return m_sprite.getGlobalBounds();
+}
+
 sf::Vector2f SpriteSheet::getPosition()
 {
     return m_sprite.getPosition();
