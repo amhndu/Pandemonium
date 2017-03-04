@@ -23,6 +23,7 @@ Game::Game() :
     TextureManager::load(GameOverBackground, "assets/gameover.png");
     TextureManager::load(EntranceSceneBG, "assets/gamebackground.png");
     TextureManager::load(RuinSceneBG, "assets/gamebackground.png");
+    TextureManager::load(PauseBackground, "assets/pause.png");
     //TODO
     //Load Cutscenes
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
@@ -34,6 +35,11 @@ Game::Game() :
 
     srand(std::time(nullptr));
 
+    overlay.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    overlay.setFillColor(sf::Color(0x50505050));
+    m_pauseIcon.setTexture(TextureManager::get(PauseBackground));
+    m_pauseIcon.setOrigin(m_pauseIcon.getGlobalBounds().width / 2.f, m_pauseIcon.getGlobalBounds().height / 2.f);
+    m_pauseIcon.setPosition(m_window.getSize().x / 2.f, m_window.getSize().y / 2.f);
     newGame();
 //     setState(StartScreen);
 }
@@ -66,9 +72,11 @@ void Game::setState(GameState state)
             m_activeObjects = nullptr;
             break;
         case Playing:
+            m_timer.restart();
             m_activeObjects = &m_gameObjects;
             break;
         case Pause:
+            m_activeObjects = nullptr;
             break;
         case GameOver:
         {
@@ -103,22 +111,27 @@ void Game::newGame()
 void Game::run()
 {
     sf::Event event;
-    sf::Clock m_timer;
     while (m_state != Exit && m_window.isOpen())
     {
         while (m_window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape))
+            if (event.type == sf::Event::Closed)
                 m_window.close();
-
+            
+            if (m_state == Playing && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
+                setState(Pause);
+            else if (m_state == Pause && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
+                setState(Playing);
+            
             if (m_activeObjects)
-            {
+            {   
                 if (event.type == sf::Event::LostFocus)
                     m_activeObjects->setActive(false);
                 else if (event.type == sf::Event::GainedFocus)
                     m_activeObjects->setActive(true);
                 m_activeObjects->handleEvent(event);
             }
+            
 
             if (m_state == Cutscene && event.type == sf::Event::KeyReleased)
             {
@@ -151,6 +164,13 @@ void Game::run()
                     waveSetup(static_cast<Player&>(*m_gameObjects.get("player")));
             }
         }
+        else if(m_state == Pause)
+        {
+            m_gameObjects.render(m_window);
+            m_window.draw(overlay);
+            m_window.draw(m_pauseIcon);
+        }
+        
 
         m_window.display();
     }
