@@ -125,7 +125,8 @@ void Game::sceneSetup()
 {
     m_state = Playing;
     auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player()));
-    player.setPosition(0, m_window.getSize().y - LAND_APP_HEIGHT - 200);
+    player.setPosition(100, m_window.getSize().y - LAND_APP_HEIGHT);
+    player.setZ(5);
 
     m_background.setTexture(TextureManager::get(m_scene.getScene().sceneBG));
 
@@ -143,8 +144,10 @@ void Game::waveSetup(Player& player)
             {
                 ++m_enemies;
                 auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies), new Enemy(i.first, player)));
-                bot.setPosition(m_scene.getScene().spawnPoint.x + -50 + (rand() % 100),
-                                m_scene.getScene().spawnPoint.y); //FIXME
+                bot.setPosition(m_scene.getScene().spawnXBeg +
+                                   (rand() / (float)RAND_MAX)  * (m_scene.getScene().spawnXEnd - m_scene.getScene().spawnXBeg),
+                                m_window.getSize().y - LAND_APP_HEIGHT);
+                bot.setZ(rand() % 10);
             }
         }
     }

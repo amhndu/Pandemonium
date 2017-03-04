@@ -24,6 +24,7 @@ public:
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
     bool toDestroy() override;
+    void setZ(int z);
 
     template <typename Callable>
     void setDeathCallback(Callable f){ m_deathCallback = f; };

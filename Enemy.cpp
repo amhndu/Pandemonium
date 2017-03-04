@@ -8,8 +8,8 @@ Enemy::Enemy(Type type, Player& player):
     GameObject(EnemyObject),
     m_frame(0),
     m_player(player),
-    m_health(MAX_HEALTH),
-    m_type(type)
+    m_type(type),
+    m_health(MAX_HEALTH)
 {
     //TODO type
     m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
@@ -48,9 +48,16 @@ sf::Vector2f Enemy::getPosition()
 
 void Enemy::setPosition(float x, float y)
 {
-    m_z = 0;
     m_position = {x, y};
     m_sprite.setPosition(x, y);
+}
+
+void Enemy::setZ(int z)
+{
+    m_z = z;
+    float d = LAND_APP_HEIGHT * m_z / 10.f;
+    m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
+                         m_position.y + d);
 }
 
 void Enemy::handleEvent(const sf::Event& event)
@@ -82,12 +89,12 @@ void Enemy::update(float dt)
             ;
         else if(m_player.getZ() - m_z > 0)
         {
-            m_z += 4 * Z_VELOCITY  * dt / 5;
+            m_z += 3.f * Z_VELOCITY  * dt / 5.f;
             moving = true;
         }
         else if(m_player.getZ() - m_z < 0)
         {
-            m_z += -(4 * Z_VELOCITY * dt / 5);
+            m_z += -(3.f * Z_VELOCITY * dt / 5.f);
             moving = true;
         }
         float d = LAND_APP_HEIGHT * m_z / 10.f;

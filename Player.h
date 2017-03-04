@@ -13,10 +13,11 @@ public:
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;
-    void setPosition(float x, float y) override;
+    void setPosition(float x, float y) override;  // y is the baseline axis where z = 0, x is the normal co-ordinate
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
     float getZ();
+    void setZ(int z);
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
@@ -26,11 +27,10 @@ private:
     float m_frameTimer;
     bool m_jumping;
     int m_health;
-    int m_armour;
     std::vector<std::vector<int>> m_animationframe;
     std::size_t m_currentAnimation;
     std::size_t m_frame;
-    bool m_attack1;
+    bool m_attacking;
 
 };
 

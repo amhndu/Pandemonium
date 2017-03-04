@@ -16,6 +16,6 @@
 #define ENEMY_VELOCITY      40.f
 #define LAND_APP_HEIGHT     300.f      /* Apparent height */
 #define LAND_SLOPE          -200.f / 300.f
-#define ANIM_FRAME_TIME     0.3f
+#define ANIM_FRAME_TIME     0.2f
 #define MAX_HEALTH          100
 #endif //CONSTANTS_H

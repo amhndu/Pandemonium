@@ -11,7 +11,8 @@ SceneManager::SceneManager()
     m_scenes.emplace(Entrance, SceneManifest{
                     EntranceSceneBG,
                     std::move(waves),
-                    sf::Vector2f{WINDOW_WIDTH - 180, WINDOW_HEIGHT - LAND_APP_HEIGHT - 200}
+                    WINDOW_WIDTH - 100,
+                    WINDOW_WIDTH - 200
                 });
 
     // Scene 2: Ruin
@@ -37,7 +38,8 @@ SceneManager::SceneManager()
     m_scenes.emplace(Ruins, SceneManifest{
                     RuinSceneBG,
                     std::move(waves),
-                    sf::Vector2f{WINDOW_WIDTH - 60, WINDOW_HEIGHT - LAND_APP_HEIGHT}
+                    WINDOW_WIDTH - 100,
+                    WINDOW_WIDTH - 200
                 });
     restart();
 }

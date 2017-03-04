@@ -17,7 +17,7 @@ struct SceneManifest
     TextureIdentifier sceneBG;
     using EnemySwarm = std::vector<std::pair<Enemy::Type, int>>;
     std::vector<EnemySwarm> waves;
-    sf::Vector2f spawnPoint;
+    float spawnXBeg, spawnXEnd;
 };
 
 class SceneManager
