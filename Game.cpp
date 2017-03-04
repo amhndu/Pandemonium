@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "Button.h"
 #include "Enemy.h"
+#include "HUD.h"
+
 
 template<>
 std::unique_ptr<TextureManager> TextureManager::m_instance = nullptr;
@@ -155,6 +157,8 @@ void Game::sceneSetup()
     auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player(m_gameObjects)));
     player.setPosition(100, m_window.getSize().y - LAND_APP_HEIGHT);
     player.setZ(5);
+
+    m_gameObjects.insert("HUD", new HUD(player));
 
     m_background.setTexture(TextureManager::get(m_scene.getScene().sceneBG));
 

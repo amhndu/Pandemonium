@@ -70,7 +70,6 @@ void Player::handleEvent(const sf::Event& event)
 
 }
 
-
 void Player::attackEnemy(Enemy& enemy)
 {
     // FIXME proper collision detection
@@ -80,8 +79,13 @@ void Player::attackEnemy(Enemy& enemy)
 
     if (std::abs(m_z - enemy.getZ()) < 3.f && weaponextension.intersects(enemy.getGlobalBounds()))
     {
-        enemy.inflictDamage(100);
+        enemy.inflictDamage(50);
     }
+}
+
+int Player::getHealth()
+{
+    return m_health;
 }
 
 void Player::update(float dt)

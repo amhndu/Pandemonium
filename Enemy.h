@@ -25,8 +25,10 @@ public:
     void update(float dt) override;
     bool toDestroy() override;
 
-    sf::FloatRect getGlobalBounds();
     void setZ(int z);
+    int getHealth();
+
+    sf::FloatRect getGlobalBounds();
     float getZ();
     template <typename Callable>
     void setDeathCallback(Callable f){ m_deathCallback = f; };
@@ -44,5 +46,8 @@ private:
     Player& m_player;
     int m_health;
     GameObjectManager *m_gameObjects;
+    sf::RectangleShape m_bg;
+    sf::RectangleShape m_fill;
+
 };
 #endif // ENEMY_H

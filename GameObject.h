@@ -11,6 +11,7 @@ public:
     enum Type
     {
         Button,
+        HUD,
         PlayerObject,
         EnemyObject,
         Projectile

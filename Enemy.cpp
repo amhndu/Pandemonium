@@ -9,13 +9,26 @@ Enemy::Enemy(Type type, Player& player):
     m_frame(0),
     m_frameTimer(0),
     m_player(player),
+
     m_type(type),
-    m_health(MAX_HEALTH)
+    m_health(MAX_HEALTH),
+
+    m_bg(sf::Vector2f(100.f,5)),
+    m_fill(sf::Vector2f())
 {
     //TODO type
     m_sprite.setTexture(TextureManager::get(Bot1Sprite), {100, 212});
     m_sprite.setSpriteIndex(0);
     m_sprite.setScale(200.f/ 212.f);
+
+    m_bg.setSize(sf::Vector2f(100, 10));
+    m_bg.setOutlineColor(sf::Color::Black);
+    m_bg.setOutlineThickness(1);
+    m_bg.setFillColor(sf::Color::Yellow);
+
+    m_fill.setSize(sf::Vector2f(100, 10));
+    m_fill.setFillColor(sf::Color::Red);
+
 }
 
 sf::FloatRect Enemy::getGlobalBounds()
@@ -56,6 +69,9 @@ void Enemy::setPosition(float x, float y)
 {
     m_position = {x, y};
     m_sprite.setPosition(x, y);
+
+    m_bg.setPosition(x-5, y - 15);
+    m_fill.setPosition(m_bg.getPosition());
 }
 
 void Enemy::setZ(int z)
@@ -120,6 +136,9 @@ void Enemy::update(float dt)
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
                                 m_position.y + d);
+        m_bg.setPosition(m_sprite.getPosition() - sf::Vector2f(0, 200) );
+        m_fill.setPosition(m_sprite.getPosition() - sf::Vector2f(0, 200));
+        m_fill.setSize(sf::Vector2f(m_health , 10));
 
         if (moving)
         {
@@ -148,7 +167,16 @@ bool Enemy::toDestroy()
 }
 
 
+int Enemy::getHealth()
+{
+    return m_health;
+}
+
+
+
 void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    target.draw(m_bg, states);
+    target.draw(m_fill, states);
     target.draw(m_sprite, states);
 }

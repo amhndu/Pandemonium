@@ -20,6 +20,7 @@ public:
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
     float getZ();
+    int getHealth();
     void setZ(int z);
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
