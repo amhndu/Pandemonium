@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "Constants.h"
 #include "Enemy.h"
+#include <iostream>
 
 Player::Player(GameObjectManager& gom) :
     GameObject(PlayerObject),
@@ -11,7 +12,8 @@ Player::Player(GameObjectManager& gom) :
     m_currentAnimation(0),
     m_attacking(false),
     m_gameObjects(gom),
-    m_frame(0)
+    m_frame(0),
+    m_flip(false)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {/**374, 810**/540,540});
     m_sprite.setSpriteIndex(0);
@@ -77,14 +79,14 @@ void Player::attackEnemy(Enemy& enemy)
     if(!m_flip)
     {
         weaponextension.left += weaponextension.width * 3.f / 4.f;
-        
+
     }
     weaponextension.width *= 1.f / 4.f;
     weaponextension.top = m_z;
-    
+
     sf::FloatRect enemybody = enemy.getGlobalBounds();
     enemybody.top = enemy.getZ();
-    
+
     if (std::abs(m_z - enemy.getZ()) < 1.5f && weaponextension.intersects(enemybody))
     {
         enemy.inflictDamage(50);
@@ -96,10 +98,23 @@ int Player::getHealth()
     return m_health;
 }
 
+void Player::inflictDamage(int damage)
+{
+    m_health -= damage;
+    if (m_health <= 0)
+        m_cb();
+}
+
 void Player::update(float dt)
 {
     if (m_active)
     {
+        if (m_health < MAX_HEALTH)
+        {
+            m_health += 5 * dt;
+            m_health = std::min(MAX_HEALTH, m_health);
+        }
+
         bool moving = false;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {

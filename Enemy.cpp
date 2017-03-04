@@ -8,8 +8,8 @@ Enemy::Enemy(Type type, Player& player):
     GameObject(EnemyObject),
     m_frame(0),
     m_frameTimer(0),
+    m_attackTimer(0),
     m_player(player),
-
     m_type(type),
     m_health(MAX_HEALTH),
     m_bg(sf::Vector2f(100.f,5)),
@@ -100,26 +100,31 @@ void Enemy::update(float dt)
     if (m_active)
     {
         bool moving = false;
-        if (std::abs(m_player.getPosition().x - getPosition().x) <
-            std::max(PLAYER_WIDTH, m_sprite.getGlobalBounds().width))
+        bool inbounds = std::abs(m_player.getPosition().x - getPosition().x) <
+            std::max(PLAYER_WIDTH, m_sprite.getGlobalBounds().width);
             moving = false;
-        else if(getPosition().x - m_player.getPosition().x > 0)
+        if(getPosition().x - m_player.getPosition().x > 0)
         {
-            m_position.x += -ENEMY_VELOCITY * dt;
-            moving = true;
+            if (!inbounds)
+            {
+                m_position.x += -ENEMY_VELOCITY * dt;
+                moving = true;
+            }
             m_sprite.setFlip(false);
         }
         else if(getPosition().x - m_player.getPosition().x < 0)
         {
-            m_position.x += +ENEMY_VELOCITY * dt;
-            moving = true;
+            if (!inbounds)
+            {
+                m_position.x += +ENEMY_VELOCITY * dt;
+                moving = true;
+            }
             m_sprite.setFlip(true);
         }
 
 
-
-        if (std::abs(m_player.getZ() - m_z) < 2 || std::abs(m_player.getPosition().x - getPosition().x) >= 40.f)
-            ;
+        if (std::abs(m_player.getZ() - m_z) < 1.5f || std::abs(m_player.getPosition().x - getPosition().x) >= 200.f)
+            inbounds = inbounds && true;
         else if(m_player.getZ() - m_z > 0)
         {
             m_z += 2.f * Z_VELOCITY  * dt / 5.f;
@@ -131,7 +136,6 @@ void Enemy::update(float dt)
             moving = true;
         }
 
-
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
                                 m_position.y + d);
@@ -139,12 +143,21 @@ void Enemy::update(float dt)
         m_fill.setPosition(m_sprite.getPosition() - sf::Vector2f(0, 200));
         m_fill.setSize(sf::Vector2f(m_health , 10));
 
+        m_attackTimer += dt;
+        if (inbounds && m_attackTimer > 1.f)
+        {
+            // Attack player
+            m_player.inflictDamage(10);
+
+            m_attackTimer = 0;
+        }
+
         if (moving)
         {
             m_frameTimer += dt;
-            if (m_frameTimer > 0.3)
+            if (m_frameTimer > ANIM_FRAME_TIME)
             {
-                m_frameTimer -= 0.3;
+                m_frameTimer -= ANIM_FRAME_TIME;
 
                 ++m_frame;
                 if (m_frame >= 8)

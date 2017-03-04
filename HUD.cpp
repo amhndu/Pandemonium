@@ -13,12 +13,12 @@ HUD::HUD(Player& player) :
     m_text.setFont(FontManager::get(DefaultFont));
     m_text.setColor(sf::Color::Black);
     m_text.setCharacterSize(20);
-    
+
     m_bg.setSize(sf::Vector2f(100, 10));
     m_bg.setOutlineColor(sf::Color::Black);
     m_bg.setOutlineThickness(1);
     m_bg.setFillColor(sf::Color::Yellow);
-    
+
     m_fill.setSize(sf::Vector2f(100, 10));
     m_fill.setFillColor(sf::Color::Red);
 
@@ -56,8 +56,8 @@ void HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     if (m_active)
     {
-        target.draw(m_fill, states);
         target.draw(m_bg, states);
+        target.draw(m_fill, states);
         target.draw(m_text, states);
     }
 }

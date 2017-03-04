@@ -42,12 +42,12 @@ private:
     sf::Vector2f m_position;
     float m_z;
     float m_frameTimer;
+    float m_attackTimer;
     int m_frame;
     Player& m_player;
     int m_health;
     GameObjectManager *m_gameObjects;
     sf::RectangleShape m_bg;
     sf::RectangleShape m_fill;
-
 };
 #endif // ENEMY_H

@@ -32,7 +32,8 @@ Game::Game() :
 
     srand(std::time(nullptr));
 
-    setState(StartScreen);
+    newGame();
+//     setState(StartScreen);
 }
 
 void Game::setState(GameState state)
@@ -42,6 +43,8 @@ void Game::setState(GameState state)
     {
         case StartScreen:
         {
+            m_startButtons.clear();
+
             auto &startBtn = *static_cast<Button*>(m_startButtons.insert("start", new Button()));
             startBtn.setText("Start Game");
             startBtn.setPosition(20, 80);
@@ -67,6 +70,8 @@ void Game::setState(GameState state)
             break;
         case GameOver:
         {
+            m_endButtons.clear();
+
             auto &startBtn = *static_cast<Button*>(m_endButtons.insert("start", new Button()));
             startBtn.setText("Play Again");
             startBtn.setPosition(20, 80);
@@ -156,6 +161,7 @@ void Game::sceneSetup()
     auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player(m_gameObjects)));
     player.setPosition(100, m_window.getSize().y - LAND_APP_HEIGHT);
     player.setZ(5);
+    player.setDeathCallback([&](){ setState(GameOver); });
 
     m_gameObjects.insert("HUD", new HUD(player));
 

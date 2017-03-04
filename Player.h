@@ -22,6 +22,12 @@ public:
     float getZ();
     int getHealth();
     void setZ(int z);
+    void inflictDamage(int damage);
+    template <typename Callable>
+    void setDeathCallback(Callable f)
+    {
+        m_cb = f;
+    }
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
@@ -32,7 +38,7 @@ private:
     float m_z;
     float m_frameTimer;
     bool m_jumping;
-    int m_health;
+    float m_health;
     std::vector<std::vector<int>> m_animationframe;
     std::size_t m_currentAnimation;
     std::size_t m_frame;
@@ -40,6 +46,7 @@ private:
     bool m_colliding;
     GameObjectManager &m_gameObjects;
     bool m_flip;
+    std::function<void(void)> m_cb;
 };
 
 #endif // PLAYER_H
