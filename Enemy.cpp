@@ -12,7 +12,6 @@ Enemy::Enemy(Type type, Player& player):
 
     m_type(type),
     m_health(MAX_HEALTH),
-
     m_bg(sf::Vector2f(100.f,5)),
     m_fill(sf::Vector2f())
 {
@@ -28,7 +27,6 @@ Enemy::Enemy(Type type, Player& player):
 
     m_fill.setSize(sf::Vector2f(100, 10));
     m_fill.setFillColor(sf::Color::Red);
-
 }
 
 sf::FloatRect Enemy::getGlobalBounds()
@@ -102,7 +100,8 @@ void Enemy::update(float dt)
     if (m_active)
     {
         bool moving = false;
-        if (std::abs(m_player.getPosition().x - getPosition().x) < 10)
+        if (std::abs(m_player.getPosition().x - getPosition().x) <
+            std::max(PLAYER_WIDTH, m_sprite.getGlobalBounds().width))
             moving = false;
         else if(getPosition().x - m_player.getPosition().x > 0)
         {
