@@ -90,7 +90,7 @@ void Player::attackEnemy(Enemy& enemy)
 
     if (std::abs(m_z - enemy.getZ()) < 1.5f && weaponextension.intersects(enemybody))
     {
-        if (enemy.inflictDamage(50))
+        if (enemy.inflictDamage(20))
         {
             m_health += 20;
             m_health = std::min(MAX_HEALTH, m_health);

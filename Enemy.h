@@ -14,7 +14,7 @@ public:
     {
         Easy,
         Medium,
-        Boss
+        Hard
     };
     Enemy(Type type, Player &player);
     void handleCollision(GameObject& other) override;
