@@ -1,6 +1,7 @@
 #ifndef RESOURCEIDENTIFIERS_INCLUDED
 #define RESOURCEIDENTIFIERS_INCLUDED
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 enum TextureIdentifier
 {
@@ -25,6 +26,15 @@ enum TextureIdentifier
 enum FontIdentifier
 {
     DefaultFont
+};
+
+enum MusicIdentifier
+{
+    StartScreenMusic,
+    CutsceneMusic,
+    PauseMusic,
+    SceneMusic1,
+    SceneMusic2
 };
 
 #endif // RESOURCEIDENTIFIERS_INCLUDED

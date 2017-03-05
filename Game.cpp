@@ -14,6 +14,9 @@ std::unique_ptr<TextureManager> TextureManager::m_instance = nullptr;
 template<>
 std::unique_ptr<FontManager> FontManager::m_instance = nullptr;
 
+template<>
+std::unique_ptr<MusicManager> MusicManager::m_instance = nullptr;
+
 Game::Game() :
     m_window(),
     m_waveTimer(3.f),
@@ -46,6 +49,17 @@ Game::Game() :
 
     m_particleSystem.setTexture(&TextureManager::get(SmokeParticle));
 
+    MusicManager::load(StartScreenMusic, "assets/light_music.wav");
+    MusicManager::get(StartScreenMusic).setLoop(true);
+    MusicManager::load(CutsceneMusic, "assets/cuscene.wav");
+    MusicManager::get(CutsceneMusic).setLoop(true);
+    MusicManager::load(SceneMusic1, "assets/wave5-.wav");
+    MusicManager::get(SceneMusic1).setLoop(true);
+    MusicManager::load(SceneMusic2, "assets/wave5+ music.wav");
+    MusicManager::get(SceneMusic2).setLoop(true);
+    MusicManager::load(PauseMusic, "assets/pause.wav");
+    MusicManager::get(PauseMusic).setLoop(true);
+
     m_window.setVerticalSyncEnabled(true);
 
     srand(std::time(nullptr));
@@ -62,6 +76,7 @@ Game::Game() :
 void Game::setState(GameState state)
 {
     m_state = state;
+    sf::Music *m;
     switch (m_state)
     {
         case StartScreen:
@@ -87,22 +102,23 @@ void Game::setState(GameState state)
             m_background.setTexture(TextureManager::get(StartScreenBackground));
             m_activeObjects = &m_startButtons;
 
-            m_bgMusic.openFromFile("assets/light_music.wav");
-
+            m = &MusicManager::get(StartScreenMusic);
             break;
         }
         case Cutscene:
             m_background.setTexture(TextureManager::get(Cutscene1));
             m_activeObjects = nullptr;
-            m_bgMusic.openFromFile("assets/cutscene.wav");
 
+            m = &MusicManager::get(CutsceneMusic);
             break;
         case Playing:
             m_timer.restart();
+
             if(m_scene.getWaveNumber() < 5)
-                m_bgMusic.openFromFile("assets/wave5-.wav");
+                m = &MusicManager::get(SceneMusic1);
             else
-                m_bgMusic.openFromFile("assets/wave5+ music.wav");
+                m = &MusicManager::get(SceneMusic2);
+
             m_activeObjects = &m_gameObjects;
             break;
         case Pause:
@@ -126,8 +142,8 @@ void Game::setState(GameState state)
             exitBtn.setCallback([&](){ setState(Exit); });
 
             m_activeObjects = &m_pauseButtons;
-            m_bgMusic.openFromFile("assets/pause.wav");
 
+            m = &MusicManager::get(PauseMusic);
             break;
         }
         case GameOverWin:
@@ -179,8 +195,14 @@ void Game::setState(GameState state)
             break;
         }
     }
-    m_bgMusic.setLoop(true);
-    m_bgMusic.play();
+
+    if (m_bgMusic != m)
+    {
+        if (m_bgMusic)
+            m_bgMusic->stop();
+        m_bgMusic = m;
+        m->play();
+    }
 }
 
 void Game::newGame()
