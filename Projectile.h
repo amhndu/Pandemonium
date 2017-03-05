@@ -13,7 +13,7 @@ public:
         Arrow,
         Bullet
     };
-    Projectile(Type t, const sf::Vector2f& pos, float vel);
+    Projectile(Type t, const sf::Vector2f& pos, float vel, float z);
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;

@@ -3,7 +3,7 @@
 #include "Constants.h"
 #include "Enemy.h"
 
-Projectile::Projectile(Type t, const sf::Vector2f& pos, float vel) :
+Projectile::Projectile(Type t, const sf::Vector2f& pos, float vel, float z) :
     GameObject(GameObject::ProjectileObject),
     m_type(t),
     m_velocity(vel),
