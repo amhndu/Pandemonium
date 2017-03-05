@@ -40,11 +40,11 @@ void SmokeEmitter::handleCollision(GameObject& other) {};
 
 void SmokeEmitter::setDie(bool die)
 {
-    if (die)
-    {
-        m_timer = 0.5f;
-        setLooping(false);
-    }
+
+    m_die = die;
+    m_timer = 0.5f;
+    setLooping(false);
+
 };
 
 bool SmokeEmitter::toDestroy()
