@@ -15,10 +15,7 @@ HUD::HUD(Player& player) :
     m_healthText.setColor(sf::Color::White);
     m_healthText.setCharacterSize(20);
 
-    if(m_isCrossBow)
-        m_weaponText.setString("Current Weapon : Cross Bow");
-
-    m_weaponText.setString("Current Weapon : Crow Bar");
+    m_weaponText.setString("Current Weapon: " + std::string(player.getWeaponType() == Player::CrossBow ? "Cross Bow" : "Crowbar"));
     m_weaponText.setFont(FontManager::get(DefaultFont));
     m_weaponText.setColor(sf::Color::White);
     m_weaponText.setCharacterSize(20);
@@ -56,7 +53,7 @@ void HUD::setSceneNumber(int number)
 void HUD::setWaveNumber(int number)
 {
     m_waveNumber.setString("Wave : " + std::to_string(number));
-    m_waveNumber.setPosition(sf::Vector2f(400, 100));    
+    m_waveNumber.setPosition(sf::Vector2f(400, 100));
     m_waveNumber.setFont(FontManager::get(DefaultFont));
     m_waveNumber.setColor(sf::Color::White);
     m_waveNumber.setCharacterSize(20);
@@ -66,6 +63,8 @@ void HUD::setWaveNumber(int number)
 void HUD::update(float dt)
 {
     m_fill.setSize(sf::Vector2f(m_player.getHealth(),10));
+    m_weaponText.setString("Current Weapon: " +
+    std::string(m_player.getWeaponType() == Player::CrossBow ? "Hawkeye's Cross Bow" : "Gordon's Crowbar"));
 }
 
 void HUD::setPosition(float x, float y)
