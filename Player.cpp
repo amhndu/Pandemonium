@@ -8,7 +8,7 @@ Player::Player(GameObjectManager& gom) :
     GameObject(PlayerObject),
     m_frameTimer(0),
     m_health(MAX_HEALTH),
-    m_animationframe({{0,1,0,2}, {0,5,4}, {0,6,4}, {0,7,4}}),
+    m_animationframe({{0,1,0,2}, {0,5,4}, {0,6,4}, {0,7,4}, {8,9,8,10}, {8,11,12}}),
     m_currentAnimation(0),
     m_attacking(false),
     m_gameObjects(gom),
@@ -108,7 +108,7 @@ void Player::changeWeapon()
 {
     if(m_currentWeapon == CrossBow)
         m_currentWeapon = CrowBar;
-    else if(m_isCrossBow)
+    else
         m_currentWeapon = CrossBow;
 }
 

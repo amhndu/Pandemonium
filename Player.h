@@ -33,33 +33,36 @@ public:
     {
         m_cb = f;
     }
-    
+
     void changeWeapon();
     WeaponType getWeaponType();
-    
+
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
     void attackEnemy(Enemy& enemy);
 
     SpriteSheet m_sprite;
+
     sf::Vector2f m_position;
     float m_z;
+
     float m_frameTimer;
-    bool m_jumping;
     float m_health;
+    bool m_jumping;
+    bool m_attacking;
+    bool m_colliding;
+
     std::vector<std::vector<int>> m_animationframe;
     std::size_t m_currentAnimation;
     std::size_t m_frame;
-    bool m_attacking;
-    bool m_colliding;
+
     GameObjectManager &m_gameObjects;
     bool m_flip;
     float m_redTimer;
     std::function<void(void)> m_cb;
-    
+
     WeaponType m_currentWeapon;
-    bool m_isCrossBow;
 };
 
 #endif // PLAYER_H
