@@ -231,8 +231,8 @@ void Player::update(float dt)
                         else
                         {
                             m_gameObjects.insert("arrow", new Projectile(Projectile::Arrow,
-                                                                         getPosition() + sf::Vector2f{100.f, -100.f},
-                                                                         350.f));
+                                                                         getPosition() + sf::Vector2f{100.f - 80.f * m_flip, -100.f},
+                                                                         350.f - 700.f * m_flip));
                         }
                         m_attacking = false;
                     }

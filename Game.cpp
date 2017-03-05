@@ -15,10 +15,15 @@ template<>
 std::unique_ptr<FontManager> FontManager::m_instance = nullptr;
 
 Game::Game() :
-    m_window(sf::VideoMode::getDesktopMode(), "Game Jam Entry", sf::Style::Fullscreen),
+    m_window(),
     m_waveTimer(3.f),
     m_particleSystem(ParticleSystem::getInstance())
 {
+    if (WINDOW_HEIGHT == sf::VideoMode::getDesktopMode().height)
+        m_window.create(sf::VideoMode::getDesktopMode(), "Game Jar", sf::Style::Fullscreen);
+    else
+        m_window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Game Jar", sf::Style::Close | sf::Style::Titlebar);
+
     FontManager::load(DefaultFont, "assets/font.ttf");
 
     TextureManager::load(StartScreenBackground, "assets/startscreen.png");
@@ -81,7 +86,7 @@ void Game::setState(GameState state)
 
             m_background.setTexture(TextureManager::get(StartScreenBackground));
             m_activeObjects = &m_startButtons;
-            
+
             m_bgMusic.openFromFile("assets/light_music.wav");
 
             break;
