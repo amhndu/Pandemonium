@@ -1,18 +1,22 @@
 #include "Enemy.h"
 #include "ResourceManager.h"
 #include "Constants.h"
+#include "Projectile.h"
 #include <iostream>
 #include <cmath>
 
-Enemy::Enemy(Type type, Player& player, SmokeEmitter &smoke):
+Enemy::Enemy(Type type, Player& player, SmokeEmitter &smoke, GameObjectManager *gom):
     GameObject(EnemyObject),
     m_frame(0),
     m_frameTimer(0),
     m_attackTimer(0),
     m_stunTimer(0),
+    m_bulletTimer(0),
     m_player(player),
+    m_flip(false),
     m_type(type),
     m_health(0),
+    m_gameObjects(gom),
     m_bg(sf::Vector2f(100.f,5)),
     m_fill(sf::Vector2f()),
     m_smoke(smoke)
@@ -164,7 +168,7 @@ void Enemy::update(float dt)
                 m_position.x += -m_enemyVelocity * dt;
                 moving = true;
             }
-            m_sprite.setFlip(false);
+            m_flip = false;
         }
         else if(getPosition().x - m_player.getPosition().x < 0)
         {
@@ -173,9 +177,21 @@ void Enemy::update(float dt)
                 m_position.x += +m_enemyVelocity * dt;
                 moving = true;
             }
-            m_sprite.setFlip(true);
+            m_flip = true;
         }
+        m_sprite.setFlip(m_flip);
 
+        if (m_type == Hard)
+        {
+            m_bulletTimer += dt;
+            if (std::abs(m_player.getZ() - m_z) < 2.f && m_bulletTimer > 2.f)
+            {
+                m_gameObjects->insert("arrow", new Projectile(Projectile::Bullet,
+                                                                         getPosition() + sf::Vector2f{100.f - 80.f * !m_flip, -100.f},
+                                                                         350.f - 700.f * !m_flip, m_z));
+                m_bulletTimer = 0;
+            }
+        }
 
         if (std::abs(m_player.getZ() - m_z) < 2.f || std::abs(m_player.getPosition().x - getPosition().x) >= 200.f)
         {

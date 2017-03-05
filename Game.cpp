@@ -31,10 +31,10 @@ Game::Game() :
     FontManager::load(DefaultFont, "assets/font.ttf");
 
     TextureManager::load(StartScreenBackground, "assets/startscreen.png");
-    TextureManager::load(GameOverWinBackground, "assets/gameover.png");
-    TextureManager::load(GameOverLoseBackground, "assets/gameover.png");
+    TextureManager::load(GameOverWinBackground, "assets/gameoverwin.png");
+    TextureManager::load(GameOverLoseBackground, "assets/gameoverlost.png");
 
-    TextureManager::load(EntranceSceneBG, "assets/gamebackground.png");
+    TextureManager::load(EntranceSceneBG, "assets/entrance.png");
     TextureManager::load(RuinSceneBG, "assets/gamebackground.png");
     TextureManager::load(PauseIcon, "assets/pause.png");
 
@@ -86,18 +86,18 @@ void Game::setState(GameState state)
 
             auto &startBtn = *static_cast<Button*>(m_startButtons.insert("start", new Button()));
             startBtn.setText("Start Game");
-            startBtn.setPosition(20, 80);
+            startBtn.setPosition(20, 320);
             startBtn.setTextColor(sf::Color::White);
-            startBtn.setBackgroundColor(sf::Color(0x25000Aff));
-            startBtn.setHoverColor(sf::Color::Black);
+            startBtn.setBackgroundColor(sf::Color::Transparent);
+            startBtn.setHoverColor(sf::Color(0x202020ff));
             startBtn.setCallback([&](){ newGame(); });
 
             auto &exitBtn = *static_cast<Button*>(m_startButtons.insert("exit", new Button()));
             exitBtn.setText("Exit");
-            exitBtn.setPosition(20, 180);
+            exitBtn.setPosition(20, 400);
             exitBtn.setTextColor(sf::Color::White);
-            exitBtn.setBackgroundColor(sf::Color(0x25000Aff));
-            exitBtn.setHoverColor(sf::Color::Black);
+            exitBtn.setBackgroundColor(sf::Color::Transparent);
+            exitBtn.setHoverColor(sf::Color(0x202020ff));
             exitBtn.setCallback([&](){ setState(Exit); });
 
             m_background.setTexture(TextureManager::get(StartScreenBackground));
@@ -128,7 +128,7 @@ void Game::setState(GameState state)
 
             auto &startBtn = *static_cast<Button*>(m_pauseButtons.insert("start", new Button()));
             startBtn.setText("Resume");
-            startBtn.setPosition(20, 150);
+            startBtn.setPosition(20, 320);
             startBtn.setTextColor(sf::Color::White);
             startBtn.setBackgroundColor(sf::Color::Transparent);
             startBtn.setHoverColor(sf::Color::Black);
@@ -136,7 +136,7 @@ void Game::setState(GameState state)
 
             auto &exitBtn = *static_cast<Button*>(m_pauseButtons.insert("exit", new Button()));
             exitBtn.setText("Exit");
-            exitBtn.setPosition(20, 250);
+            exitBtn.setPosition(20, 400);
             exitBtn.setTextColor(sf::Color::White);
             exitBtn.setBackgroundColor(sf::Color::Transparent);
             exitBtn.setHoverColor(sf::Color::Black);
@@ -327,7 +327,7 @@ void Game::waveSetup(Player& player)
             ++m_enemies;
             auto &smoke = *static_cast<SmokeEmitter*>(m_gameObjects.insert("smoke" + std::to_string(m_enemies), new SmokeEmitter));
             auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies),
-                                            new Enemy(p.first, player, smoke)));
+                                            new Enemy(p.first, player, smoke, &m_gameObjects)));
             bot.setPosition(m_scene.getScene().spawnXBeg +
                                 (rand() / (float)RAND_MAX)  * (m_scene.getScene().spawnXEnd - m_scene.getScene().spawnXBeg),
                             m_window.getSize().y - LAND_APP_HEIGHT);

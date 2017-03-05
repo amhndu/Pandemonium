@@ -18,7 +18,7 @@ public:
         Medium,
         Hard
     };
-    Enemy(Type type, Player &player, SmokeEmitter& smoke);
+    Enemy(Type type, Player &player, SmokeEmitter& smoke, GameObjectManager* gom);
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;
@@ -48,9 +48,11 @@ private:
     float m_frameTimer;
     float m_attackTimer;
     float m_stunTimer;
+    float m_bulletTimer;
     float m_enemyVelocity;
     float m_enemyZVelocity;
     int m_frame;
+    bool m_flip;
 
     Player& m_player;
 

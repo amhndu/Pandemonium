@@ -37,7 +37,7 @@ void Player::handleCollision(GameObject& other)
         case EnemyObject:
             break;
         case ProjectileObject:
-            // If colliding, then reduce armor/health
+            other.handleCollision(*this);
             break;
     }
 }
@@ -50,6 +50,11 @@ void Player::setActive(bool active)
 int Player::getArrowLeft()
 {
     return m_arrowLeft;
+}
+
+sf::FloatRect Player::getGlobalBounds()
+{
+    return m_sprite.getGlobalBounds();
 }
 
 

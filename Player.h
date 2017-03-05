@@ -29,6 +29,7 @@ public:
     int getArrowLeft();
     void setZ(int z);
     void inflictDamage(int damage);
+    sf::FloatRect getGlobalBounds();
     template <typename Callable>
     void setDeathCallback(Callable f)
     {
