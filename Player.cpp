@@ -69,6 +69,12 @@ void Player::handleEvent(const sf::Event& event)
 
 }
 
+int Player::getHealth()
+{
+    return m_health;
+}
+
+
 void Player::update(float dt)
 {
     if (m_active)

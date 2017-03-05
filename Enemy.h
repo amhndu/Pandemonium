@@ -25,6 +25,10 @@ public:
     void update(float dt) override;
     bool toDestroy() override;
     void setZ(int z);
+    
+    
+    int getHealth();
+    
 
     template <typename Callable>
     void setDeathCallback(Callable f){ m_deathCallback = f; };
@@ -40,6 +44,9 @@ private:
     int m_frame;
     Player& m_player;
     int m_health;
+    
+    sf::RectangleShape m_bg;
+    sf::RectangleShape m_fill;
 
 };
 #endif // ENEMY_H

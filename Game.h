@@ -32,7 +32,8 @@ private:
     GameObjectManager m_gameObjects;
     GameObjectManager m_endButtons;
     GameObjectManager *m_activeObjects;
-
+    
+    
     SceneManager m_scene;
     int m_enemies;
 
