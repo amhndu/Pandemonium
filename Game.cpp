@@ -169,16 +169,20 @@ void Game::waveSetup(Player& player)
 {
     m_enemies = 0;
     const SceneManifest::EnemySwarm& swarm = m_scene.getWave();
-    for (const auto& i : swarm)
+    for (const auto& p : swarm)
     {
-        for (int j = 0; j < i.second; ++j)
+        for (int j = 0; j < p.second; ++j)
         {
             ++m_enemies;
-            auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies), new Enemy(i.first, player)));
+            auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies), new Enemy(p.first, player)));
             bot.setPosition(m_scene.getScene().spawnXBeg +
                                 (rand() / (float)RAND_MAX)  * (m_scene.getScene().spawnXEnd - m_scene.getScene().spawnXBeg),
                             m_window.getSize().y - LAND_APP_HEIGHT);
-            bot.setZ(rand() % 10);
+            float z = (10.f/p.second)*j;
+//         int z = rand()%(pw-50) + pw*i + 25; //place tank within the ith part within a padding of 25pixels on both sides
+//         pTank->setPosition(sf::Vector2f(x,constants::windowHeight-getLandHeight(x)-10));
+            
+            bot.setZ(z);
             bot.setDeathCallback([&](){ enemyDeathCallback(); } );
         }
     }

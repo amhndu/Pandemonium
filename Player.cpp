@@ -74,10 +74,18 @@ void Player::attackEnemy(Enemy& enemy)
 {
     // FIXME proper collision detection
     sf::FloatRect weaponextension = m_sprite.getGlobalBounds();
-    weaponextension.left += weaponextension.width * 3.f / 4.f;
+    if(!m_flip)
+    {
+        weaponextension.left += weaponextension.width * 3.f / 4.f;
+        
+    }
     weaponextension.width *= 1.f / 4.f;
-
-    if (std::abs(m_z - enemy.getZ()) < 3.f && weaponextension.intersects(enemy.getGlobalBounds()))
+    weaponextension.top = m_z;
+    
+    sf::FloatRect enemybody = enemy.getGlobalBounds();
+    enemybody.top = enemy.getZ();
+    
+    if (std::abs(m_z - enemy.getZ()) < 1.5f && weaponextension.intersects(enemybody))
     {
         enemy.inflictDamage(50);
     }
@@ -114,13 +122,13 @@ void Player::update(float dt)
             {
                 m_position.x += PLAYER_VELOCITY * dt;
                 moving = true;
-                m_sprite.setFlip(false);
+                m_flip = false;
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_sprite.getPosition().x >= 0)
             {
                 m_position.x += -PLAYER_VELOCITY * dt;
                 moving = true;
-                m_sprite.setFlip(true);
+                m_flip = true;
             }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_z >= 0 && m_sprite.getPosition().x < WINDOW_WIDTH)
@@ -133,6 +141,7 @@ void Player::update(float dt)
                 m_z += Z_VELOCITY * dt;
                 moving = true;
             }
+            m_sprite.setFlip(m_flip);
         }
 
         float d = LAND_APP_HEIGHT * m_z / 10.f;

@@ -39,6 +39,7 @@ private:
     bool m_attacking;
     bool m_colliding;
     GameObjectManager &m_gameObjects;
+    bool m_flip;
 };
 
 #endif // PLAYER_H

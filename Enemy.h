@@ -25,7 +25,7 @@ public:
     void update(float dt) override;
     bool toDestroy() override;
 
-    void setZ(int z);
+    void setZ(float z);
     int getHealth();
 
     sf::FloatRect getGlobalBounds();

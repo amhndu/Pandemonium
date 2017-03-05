@@ -74,7 +74,7 @@ void Enemy::setPosition(float x, float y)
     m_fill.setPosition(m_bg.getPosition());
 }
 
-void Enemy::setZ(int z)
+void Enemy::setZ(float z)
 {
     m_z = z;
     float d = LAND_APP_HEIGHT * m_z / 10.f;
