@@ -209,6 +209,9 @@ void Game::setState(GameState state)
             m = &MusicManager::get(StartScreenMusic);
             break;
         }
+        case Exit:
+            m_window.close();
+            break;
     }
 
     if (m && m_bgMusic != m)
@@ -329,6 +332,49 @@ void Game::sceneSetup()
 
     m_gameObjects.insert("HUD", new HUD(player));
     m_background.setTexture(TextureManager::get(m_scene.getScene().sceneBG));
+
+    //1027, 324; 1179, 167; 936, 365
+    //944, 249
+    if (m_scene.getSceneNumber() == 2)
+    {
+        auto *smoke = new SmokeEmitter();
+        smoke->setLooping(true);
+        smoke->setSpeed(8, 4);
+        smoke->setLifetime(5);
+        smoke->setScale(0.75, 2.5);
+        smoke->setPosition(944, 249);
+        smoke->createParticles(300);
+        m_gameObjects.insert("bgsmoke", smoke);
+    }
+    else if (m_scene.getSceneNumber() == 1)
+    {
+        auto *smoke = new SmokeEmitter();
+        smoke->setLooping(true);
+        smoke->setSpeed(8, 4);
+        smoke->setLifetime(5);
+        smoke->setScale(0.75, 2.5);
+        smoke->setPosition(1027, 324);
+        smoke->createParticles(300);
+        m_gameObjects.insert("bgsmoke1", smoke);
+
+        smoke = new SmokeEmitter();
+        smoke->setLooping(true);
+        smoke->setSpeed(8, 4);
+        smoke->setLifetime(5);
+        smoke->setScale(0.75, 2.5);
+        smoke->setPosition(1179, 167);
+        smoke->createParticles(300);
+        m_gameObjects.insert("bgsmoke2", smoke);
+
+        smoke = new SmokeEmitter();
+        smoke->setLooping(true);
+        smoke->setSpeed(8, 4);
+        smoke->setLifetime(5);
+        smoke->setScale(0.75, 2.5);
+        smoke->setPosition(936, 365);
+        smoke->createParticles(300);
+        m_gameObjects.insert("bgsmoke3", smoke);
+    }
 
     waveSetup(player);
 }
