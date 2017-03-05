@@ -14,7 +14,7 @@ public:
         HUD,
         PlayerObject,
         EnemyObject,
-        Projectile,
+        ProjectileObject,
         ParticleEmitter
     };
 

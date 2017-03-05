@@ -17,7 +17,9 @@ enum TextureIdentifier
     Cutscene1,
     Cutscene2,
     Cutscene3,
-    SmokeParticle
+    SmokeParticle,
+    ArrowTexture,
+    BulletTexture
 };
 
 enum FontIdentifier

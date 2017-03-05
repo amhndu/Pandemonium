@@ -37,9 +37,12 @@ Enemy::Enemy(Type type, Player& player, SmokeEmitter &smoke):
             m_emmiterPosition = {68.f, -42.f};
             break;
         case Hard:
-            m_sprite.setTexture(TextureManager::get(Bot3Sprite), {100, 212});
+            m_sprite.setTexture(TextureManager::get(Bot3Sprite), {135, 210});
             m_health = 100;
             m_attackDamage = 30;
+
+            m_emmiterPosition = {104.f, -106.f};
+
             m_enemyZVelocity = 8.f;
             m_enemyVelocity = 50.f;
             break;
@@ -85,8 +88,8 @@ void Enemy::handleCollision(GameObject& other)
         case EnemyObject:
             // Do nothing ?
             break;
-        case Projectile:
-            // If colliding, then reduce armor/health
+        case ProjectileObject:
+            other.handleCollision(*this);
             break;
     }
 }

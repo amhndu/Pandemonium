@@ -13,21 +13,22 @@ public:
         Arrow,
         Bullet
     };
-    Projectile() ;
+    Projectile(Type t, const sf::Vector2f& pos, float vel);
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;
     void setPosition(float x, float y) override;
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
-    void setVelocity(float val) ;
-
+    bool toDestroy() { return m_collided; };
+    void setCollided();
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    
 private:
-    float velocity ;
-    sf::CircleShape m_circle ;   
+    float m_velocity;
+    sf::Sprite m_sprite;
+    Type m_type;
+    bool m_collided;
 };
 
 #endif //PROJECTILE_H
