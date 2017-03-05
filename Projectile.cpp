@@ -7,7 +7,8 @@ Projectile::Projectile(Type t, const sf::Vector2f& pos, float vel, float z) :
     GameObject(GameObject::ProjectileObject),
     m_type(t),
     m_velocity(vel),
-    m_collided(false)
+    m_collided(false),
+    m_z(z)
 {
     switch (m_type)
     {
@@ -39,7 +40,7 @@ void Projectile::handleCollision(GameObject& other)
             box2.height = 3;
             if (box1.intersects(box2))
             {
-                enemy.inflictDamage(20);
+                enemy.inflictDamage(15);
                 setCollided();
             }
             break;
