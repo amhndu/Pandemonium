@@ -13,7 +13,8 @@ Player::Player(GameObjectManager& gom) :
     m_attacking(false),
     m_gameObjects(gom),
     m_frame(0),
-    m_flip(false)
+    m_flip(false),
+    m_colliding(false)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {/**374, 810**/540,540});
     m_sprite.setSpriteIndex(0);
@@ -89,7 +90,11 @@ void Player::attackEnemy(Enemy& enemy)
 
     if (std::abs(m_z - enemy.getZ()) < 1.5f && weaponextension.intersects(enemybody))
     {
-        enemy.inflictDamage(50);
+        if (enemy.inflictDamage(50))
+        {
+            m_health += 20;
+            m_health = std::min(MAX_HEALTH, m_health);
+        }
     }
 }
 

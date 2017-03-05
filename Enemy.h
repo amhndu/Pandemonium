@@ -32,7 +32,7 @@ public:
     float getZ();
     template <typename Callable>
     void setDeathCallback(Callable f){ m_deathCallback = f; };
-    void inflictDamage(int damage);
+    bool inflictDamage(int damage);
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:

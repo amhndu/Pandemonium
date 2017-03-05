@@ -68,7 +68,7 @@ void Enemy::setPosition(float x, float y)
     m_position = {x, y};
     m_sprite.setPosition(x, y);
 
-    m_bg.setPosition(x-5, y - 15);
+    m_bg.setPosition(x-200, y - 200);
     m_fill.setPosition(m_bg.getPosition());
 }
 
@@ -85,9 +85,10 @@ float Enemy::getZ()
     return m_z;
 }
 
-void Enemy::inflictDamage(int damage)
+bool Enemy::inflictDamage(int damage)
 {
     m_health -= damage;
+    return m_health <= 0;
 }
 
 void Enemy::handleEvent(const sf::Event& event)
