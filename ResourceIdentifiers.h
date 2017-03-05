@@ -4,7 +4,6 @@
 
 enum TextureIdentifier
 {
-    Placeholder,
     StartScreenBackground,
     PauseIcon,
     EntranceSceneBG,
@@ -16,7 +15,8 @@ enum TextureIdentifier
     Bot3Sprite,
     Cutscene1,
     Cutscene2,
-    Cutscene3
+    Cutscene3,
+    SmokeParticle
 };
 
 enum FontIdentifier

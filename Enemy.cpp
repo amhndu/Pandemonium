@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>
 
-Enemy::Enemy(Type type, Player& player):
+Enemy::Enemy(Type type, Player& player, SmokeEmitter &smoke):
     GameObject(EnemyObject),
     m_frame(0),
     m_frameTimer(0),
@@ -14,7 +14,8 @@ Enemy::Enemy(Type type, Player& player):
     m_type(type),
     m_health(0),
     m_bg(sf::Vector2f(100.f,5)),
-    m_fill(sf::Vector2f())
+    m_fill(sf::Vector2f()),
+    m_smoke(smoke)
 {
     switch (m_type)
     {
@@ -23,11 +24,13 @@ Enemy::Enemy(Type type, Player& player):
             m_sprite.setTexture(TextureManager::get(Bot1Sprite), {60, 200});
             m_health = 40;
             m_attackDamage = 10;
+            m_emmiterPosition = {45.f, -65.f};
             break;
         case Medium:
             m_sprite.setTexture(TextureManager::get(Bot2Sprite), {120, 100});
             m_health = 60;
             m_attackDamage = 20;
+            m_emmiterPosition = {68.f, -42.f};
             break;
         case Hard:
             m_sprite.setTexture(TextureManager::get(Bot3Sprite), {100, 212});
@@ -41,7 +44,6 @@ Enemy::Enemy(Type type, Player& player):
         m_health = m_health / 2;
 
     m_sprite.setSpriteIndex(0);
-    m_sprite.setScale(200.f/ 212.f);
 
     m_bg.setSize(sf::Vector2f(100, 10));
     m_bg.setOutlineColor(sf::Color::Black);
@@ -50,6 +52,13 @@ Enemy::Enemy(Type type, Player& player):
 
     m_fill.setSize(sf::Vector2f(100, 10));
     m_fill.setFillColor(sf::Color::Red);
+
+    m_smoke.setLooping(true);
+    m_smoke.setSpeed(8, 4);
+    m_smoke.setLifetime(5);
+    m_smoke.setScale(0.75, 2.5);
+    //smoke.setAngle(math::PI / 4, 0.4);
+    //m_smoke.createParticles(200);
 }
 
 sf::FloatRect Enemy::getGlobalBounds()
@@ -91,8 +100,10 @@ void Enemy::setPosition(float x, float y)
     m_position = {x, y};
     m_sprite.setPosition(x, y);
 
-    m_bg.setPosition(x-200, y - 200);
+    m_bg.setPosition(x - 200, y - 200);
     m_fill.setPosition(m_bg.getPosition());
+
+    m_smoke.setPosition(m_sprite.getPosition() + m_emmiterPosition);
 }
 
 void Enemy::setZ(float z)
@@ -113,6 +124,7 @@ bool Enemy::inflictDamage(int damage)
     m_health -= damage;
     m_stunTimer = 0.3f;
     m_sprite.setColor(sf::Color::Red);
+    m_smoke.createParticles(200.f * damage / m_maxHealth);
     return m_health <= 0;
 }
 
@@ -178,13 +190,18 @@ void Enemy::update(float dt)
         m_bg.setPosition(m_sprite.getPosition() - sf::Vector2f(0, 200) );
         m_fill.setPosition(m_sprite.getPosition() - sf::Vector2f(0, 200));
         m_fill.setSize(sf::Vector2f(getHealth() * 100, 10));
+        m_smoke.setPosition(m_sprite.getPosition() + m_emmiterPosition);
 
-        m_attackTimer += dt;
-        if (m_stunTimer <= 0 && inbounds && m_attackTimer > 1.5f)
+        if (m_attackTimer > 0)
         {
-            m_player.inflictDamage(m_attackDamage);
-            // Attack player
-            m_attackTimer = 0;
+            m_attackTimer -= dt;
+            if (m_attackTimer <= 0)
+                m_player.inflictDamage(m_attackDamage);
+        }
+
+        if (m_stunTimer <= 0 && inbounds && m_attackTimer <= 0)
+        {
+            m_attackTimer = 1.5f;
         }
 
         if (moving)
@@ -209,7 +226,10 @@ bool Enemy::toDestroy()
 {
     bool flag = m_health <= 0;
     if (flag)
+    {
         m_deathCallback();
+        m_smoke.setDie(true);
+    }
     return flag;
 }
 
@@ -218,7 +238,6 @@ float Enemy::getHealth()
 {
     return static_cast<float>(m_health) / m_maxHealth;
 }
-
 
 
 void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const

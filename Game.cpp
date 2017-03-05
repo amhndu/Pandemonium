@@ -7,7 +7,7 @@
 #include "Button.h"
 #include "Enemy.h"
 #include "HUD.h"
-
+#include "Smoke.h"
 
 template<>
 std::unique_ptr<TextureManager> TextureManager::m_instance = nullptr;
@@ -16,7 +16,8 @@ std::unique_ptr<FontManager> FontManager::m_instance = nullptr;
 
 Game::Game() :
     m_window(sf::VideoMode::getDesktopMode(), "Game Jam Entry", sf::Style::Fullscreen),
-    m_waveTimer(3.f)
+    m_waveTimer(3.f),
+    m_particleSystem(ParticleSystem::getInstance())
 {
     FontManager::load(DefaultFont, "assets/font.ttf");
 
@@ -25,12 +26,15 @@ Game::Game() :
     TextureManager::load(EntranceSceneBG, "assets/gamebackground.png");
     TextureManager::load(RuinSceneBG, "assets/gamebackground.png");
     TextureManager::load(PauseIcon, "assets/pause.png");
-    //TODO
-    //Load Cutscenes
+
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
     TextureManager::load(Bot1Sprite, "assets/bot1sprite.png");
     TextureManager::load(Bot2Sprite, "assets/bot2sprite.png");
     TextureManager::load(Bot3Sprite, "assets/enemy.png");
+    TextureManager::load(SmokeParticle, "assets/particle.png");
+    TextureManager::get(SmokeParticle).setSmooth(true);
+
+    m_particleSystem.setTexture(&TextureManager::get(SmokeParticle));
 
     m_window.setVerticalSyncEnabled(true);
 
@@ -98,7 +102,7 @@ void Game::setState(GameState state)
             m_endButtons.clear();
 
             auto &startBtn = *static_cast<Button*>(m_endButtons.insert("start", new Button()));
-            startBtn.setText("Play Again");
+            startBtn.setText("Restart");
             startBtn.setPosition(20, 80);
             startBtn.setCallback([&](){ newGame(); });
 
@@ -170,10 +174,13 @@ void Game::run()
         if (m_activeObjects)
         {
             float dt = m_timer.restart().asSeconds();
-
-
             m_activeObjects->update(dt);
             m_activeObjects->render(m_window);
+            if (m_state == Playing)
+            {
+                m_particleSystem.update(dt);
+                m_window.draw(m_particleSystem, sf::BlendAlpha);
+            }
 
             if (m_state == Playing && m_enemies <= 0)
             {
@@ -229,7 +236,9 @@ void Game::waveSetup(Player& player)
         for (int j = 0; j < p.second; ++j)
         {
             ++m_enemies;
-            auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies), new Enemy(p.first, player)));
+            auto &smoke = *static_cast<SmokeEmitter*>(m_gameObjects.insert("smoke" + std::to_string(m_enemies), new SmokeEmitter));
+            auto &bot = *static_cast<Enemy*>(m_gameObjects.insert("bot" + std::to_string(m_enemies),
+                                            new Enemy(p.first, player, smoke)));
             bot.setPosition(m_scene.getScene().spawnXBeg +
                                 (rand() / (float)RAND_MAX)  * (m_scene.getScene().spawnXEnd - m_scene.getScene().spawnXBeg),
                             m_window.getSize().y - LAND_APP_HEIGHT);

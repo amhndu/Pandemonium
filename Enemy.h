@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "SpriteSheet.h"
 #include "Player.h"
+#include "Smoke.h"
 #include <SFML/Graphics.hpp>
 #include <functional>
 
@@ -17,7 +18,7 @@ public:
         Medium,
         Hard
     };
-    Enemy(Type type, Player &player);
+    Enemy(Type type, Player &player, SmokeEmitter& smoke);
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;
@@ -39,19 +40,28 @@ protected:
 private:
     std::function<void(void)> m_deathCallback;
     Type m_type;
+
     SpriteSheet m_sprite;
     sf::Vector2f m_position;
     float m_z;
+
     float m_frameTimer;
     float m_attackTimer;
     float m_stunTimer;
     int m_frame;
+
     Player& m_player;
+
     int m_health;
     int m_maxHealth;
     int m_attackDamage;
+
     GameObjectManager *m_gameObjects;
+
     sf::RectangleShape m_bg;
     sf::RectangleShape m_fill;
+
+    SmokeEmitter &m_smoke;
+    sf::Vector2f m_emmiterPosition;
 };
 #endif // ENEMY_H

@@ -52,6 +52,7 @@ private:
     sf::Sprite m_pauseIcon;
     sf::RectangleShape overlay;
 
+    ParticleSystem &m_particleSystem;
 };
 
 #endif // GAME_H

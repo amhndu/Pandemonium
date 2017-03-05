@@ -14,7 +14,8 @@ public:
         HUD,
         PlayerObject,
         EnemyObject,
-        Projectile
+        Projectile,
+        ParticleEmitter
     };
 
     GameObject(Type type) : m_type(type), m_active(true) {};
