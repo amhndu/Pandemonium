@@ -14,7 +14,6 @@ void Button::setText(const std::string& text)
 {
     m_text.setString(text);
     m_text.setFont(FontManager::get(DefaultFont));
-    m_text.setColor(BUTTON_TEXT_COLOR);
     m_text.setCharacterSize(50);
     m_bg.setSize(sf::Vector2f(m_text.getGlobalBounds().width + 20, m_text.getGlobalBounds().height + 20));
     m_bg.setOrigin(0, -m_bg.getLocalBounds().height / 2 + 22);
@@ -37,6 +36,23 @@ void Button::setActive(bool active)
     m_active = active;
 }
 
+void Button::setTextColor(const sf::Color& color)
+{
+    m_text.setColor(color);
+}
+
+void Button::setBackgroundColor(const sf::Color& color)
+{
+    m_backgroundColor = color;
+    m_bg.setFillColor(color);
+}
+
+void Button::setHoverColor(const sf::Color& color)
+{
+    m_hoverColor = color;
+}
+
+
 void Button::handleEvent(const sf::Event& event)
 {
     if (m_active)
@@ -56,12 +72,12 @@ void Button::handleEvent(const sf::Event& event)
             if (!m_mouseInside && inside)
             {
                 m_mouseInside = true;
-                m_bg.setFillColor(BUTTON_HOVER_COLOR);
+                m_bg.setFillColor(m_hoverColor);
             }
             else if (m_mouseInside && !inside)
             {
                 m_mouseInside = false;
-                m_bg.setFillColor(BUTTON_BG_COLOR);
+                m_bg.setFillColor(m_backgroundColor);
             }
         }
     }

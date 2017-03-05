@@ -15,7 +15,8 @@ Player::Player(GameObjectManager& gom) :
     m_frame(0),
     m_flip(false),
     m_redTimer(0),
-    m_colliding(false)
+    m_colliding(false),
+    m_currentWeapon(CrowBar)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {120, 200});
     m_sprite.setSpriteIndex(0);
@@ -103,6 +104,26 @@ int Player::getHealth()
     return m_health;
 }
 
+void Player::changeWeapon()
+{
+    if(m_currentWeapon == CrossBow)
+        m_currentWeapon = CrowBar;
+    else if(m_isCrossBow)
+        m_currentWeapon = CrossBow;
+}
+
+Player::WeaponType Player::getWeaponType()
+{
+    return m_currentWeapon;
+}
+/*
+bool Player::isCrossBow()
+{
+    return (m_currentWeapon == CrossBow);
+}*/
+
+
+
 void Player::inflictDamage(int damage)
 {
     m_health -= damage;
@@ -171,9 +192,9 @@ void Player::update(float dt)
             }
             m_sprite.setFlip(m_flip);
         }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         {
-            
+            changeWeapon();
         }
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
