@@ -99,7 +99,7 @@ void Game::setState(GameState state)
             break;
         case Playing:
             m_timer.restart();
-            if(m_scene.getSceneNumber() < 2)
+            if(m_scene.getWaveNumber() < 5)
                 m_bgMusic.openFromFile("assets/wave5-.wav");
             else
                 m_bgMusic.openFromFile("assets/wave5+ music.wav");
