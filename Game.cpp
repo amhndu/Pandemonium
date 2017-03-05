@@ -127,7 +127,7 @@ void Game::setState(GameState state)
         case Playing:
             m_timer.restart();
 
-            if(m_scene.getWaveNumber() < 5)
+            if(m_scene.getSceneNumber() < 2)
                 m = &MusicManager::get(SceneMusic1);
             else
                 m = &MusicManager::get(SceneMusic2);
