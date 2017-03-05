@@ -17,17 +17,17 @@ HUD::HUD(Player& player) :
 
     if(m_isCrossBow)
         m_weaponText.setString("Current Weapon : Cross Bow");
-    
+
     m_weaponText.setString("Current Weapon : Crow Bar");
     m_weaponText.setFont(FontManager::get(DefaultFont));
     m_weaponText.setColor(sf::Color::White);
     m_weaponText.setCharacterSize(20);
-    
+
     m_crossBow.setString("No of Cross Bow :");
     m_crossBow.setFont(FontManager::get(DefaultFont));
     m_crossBow.setColor(sf::Color::White);
     m_crossBow.setCharacterSize(20);
-    
+
     m_bg.setSize(sf::Vector2f(100, 10));
     m_bg.setOutlineColor(sf::Color::Black);
     m_bg.setOutlineThickness(1);
@@ -76,6 +76,7 @@ void HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(m_fill, states);
         target.draw(m_healthText, states);
         target.draw(m_weaponText, states);
-        target.draw(m_crossBow, states);
+        if (m_isCrossBow)
+            target.draw(m_crossBow, states);
     }
 }
