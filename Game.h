@@ -41,7 +41,7 @@ private:
 
     // Cutscenes index starting from 0
     int m_cutscene;
-    const int m_totalCutscenes = 4;
+    const int m_totalCutscenes = 10;
 
     sf::RenderWindow m_window;
     sf::Sprite m_background;

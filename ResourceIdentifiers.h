@@ -18,6 +18,13 @@ enum TextureIdentifier
     Cutscene1,
     Cutscene2,
     Cutscene3,
+    Cutscene4,
+    Cutscene5,
+    Cutscene6,
+    Cutscene7,
+    Cutscene8,
+    Cutscene9,
+    Cutscene10,
     SmokeParticle,
     ArrowTexture,
     BulletTexture

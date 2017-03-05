@@ -21,7 +21,8 @@ Game::Game() :
     m_window(),
     m_waveTimer(3.f),
     m_particleSystem(ParticleSystem::getInstance()),
-    m_bgMusic(nullptr)
+    m_bgMusic(nullptr),
+    m_cutscene(0)
 {
     if (WINDOW_HEIGHT == sf::VideoMode::getDesktopMode().height)
         m_window.create(sf::VideoMode::getDesktopMode(), "Game Jar", sf::Style::Fullscreen);
@@ -35,7 +36,7 @@ Game::Game() :
     TextureManager::load(GameOverLoseBackground, "assets/gameoverlost.png");
 
     TextureManager::load(EntranceSceneBG, "assets/entrance.png");
-    TextureManager::load(RuinSceneBG, "assets/gamebackground.png");
+    TextureManager::load(RuinSceneBG, "assets/ruins.png");
     TextureManager::load(PauseIcon, "assets/pause.png");
 
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
@@ -44,6 +45,17 @@ Game::Game() :
     TextureManager::load(Bot3Sprite, "assets/bot3sprite.png");
     TextureManager::load(SmokeParticle, "assets/particle.png");
     TextureManager::get(SmokeParticle).setSmooth(true);
+
+    TextureManager::load(Cutscene1, "assets/1.png");
+    TextureManager::load(Cutscene2, "assets/2.png");
+    TextureManager::load(Cutscene3, "assets/3.png");
+    TextureManager::load(Cutscene4, "assets/4.png");
+    TextureManager::load(Cutscene5, "assets/5.png");
+    TextureManager::load(Cutscene6, "assets/6.png");
+    TextureManager::load(Cutscene7, "assets/7.png");
+    TextureManager::load(Cutscene8, "assets/8.png");
+    TextureManager::load(Cutscene9, "assets/9.png");
+    TextureManager::load(Cutscene10, "assets/10.png");
 
     TextureManager::load(ArrowTexture, "assets/arrow.png");
     TextureManager::load(BulletTexture, "assets/bullet.png");
@@ -90,7 +102,7 @@ void Game::setState(GameState state)
             startBtn.setTextColor(sf::Color::White);
             startBtn.setBackgroundColor(sf::Color::Transparent);
             startBtn.setHoverColor(sf::Color(0x202020ff));
-            startBtn.setCallback([&](){ newGame(); });
+            startBtn.setCallback([&](){ setState(Cutscene);/*newGame();*/ });
 
             auto &exitBtn = *static_cast<Button*>(m_startButtons.insert("exit", new Button()));
             exitBtn.setText("Exit");
@@ -109,7 +121,7 @@ void Game::setState(GameState state)
         case Cutscene:
             m_background.setTexture(TextureManager::get(Cutscene1));
             m_activeObjects = nullptr;
-
+            m_cutscene = 0;
             m = &MusicManager::get(CutsceneMusic);
             break;
         case Playing:
@@ -244,10 +256,17 @@ void Game::run()
 
             if (m_state == Cutscene && event.type == sf::Event::KeyReleased)
             {
-                if (++m_cutscene < m_totalCutscenes)
-                    m_background.setTexture(TextureManager::get(static_cast<TextureIdentifier>(Cutscene1 + m_cutscene)));
-                else
+                if (event.key.code == sf::Keyboard::Escape)
+                {
                     newGame();
+                }
+                else
+                {
+                    if (++m_cutscene < m_totalCutscenes)
+                        m_background.setTexture(TextureManager::get(static_cast<TextureIdentifier>(Cutscene1 + m_cutscene)));
+                    else
+                        newGame();
+                }
             }
         }
 

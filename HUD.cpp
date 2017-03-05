@@ -11,17 +11,17 @@ HUD::HUD(Player& player) :
 {
     m_healthText.setString("Health :");
     m_healthText.setFont(FontManager::get(DefaultFont));
-    m_healthText.setColor(sf::Color::White);
+    m_healthText.setColor(sf::Color::Black);
     m_healthText.setCharacterSize(20);
 
     m_weaponText.setString("Current Weapon: " + std::string(player.getWeaponType() == Player::CrossBow ? "Cross Bow" : "Crowbar"));
     m_weaponText.setFont(FontManager::get(DefaultFont));
-    m_weaponText.setColor(sf::Color::White);
+    m_weaponText.setColor(sf::Color::Black);
     m_weaponText.setCharacterSize(20);
 
     m_crossBow.setString("No of Arrows : " + std::to_string(m_player.getArrowLeft()));
     m_crossBow.setFont(FontManager::get(DefaultFont));
-    m_crossBow.setColor(sf::Color::White);
+    m_crossBow.setColor(sf::Color::Black);
     m_crossBow.setCharacterSize(20);
 
     m_bg.setSize(sf::Vector2f(100, 10));
@@ -44,8 +44,8 @@ void HUD::setSceneNumber(int number)
 {
     m_sceneNumber.setString("Scene : " + std::to_string(number));
     m_sceneNumber.setPosition(sf::Vector2f(400, 70));
-    m_sceneNumber.setFont(FontManager::get(DefaultFont));
-    m_sceneNumber.setColor(sf::Color::White);
+//     m_sceneNumber.setFont(FontManager::get(DefaultFont));
+//     m_sceneNumber.setColor(sf::Color::White);
     m_sceneNumber.setCharacterSize(20);
 }
 
@@ -53,8 +53,8 @@ void HUD::setWaveNumber(int number)
 {
     m_waveNumber.setString("Wave : " + std::to_string(number));
     m_waveNumber.setPosition(sf::Vector2f(400, 100));
-    m_waveNumber.setFont(FontManager::get(DefaultFont));
-    m_waveNumber.setColor(sf::Color::White);
+//     m_waveNumber.setFont(FontManager::get(DefaultFont));
+//     m_waveNumber.setColor(sf::Color::White);
     m_waveNumber.setCharacterSize(20);
 }
 
@@ -96,7 +96,7 @@ void HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(m_fill, states);
         target.draw(m_healthText, states);
         target.draw(m_weaponText, states);
-        if (m_player.getWeaponType() == Player::CrossBow)
+//         if (m_player.getWeaponType() == Player::CrossBow)
             target.draw(m_crossBow, states);
         target.draw(m_sceneNumber, states);
         target.draw(m_waveNumber, states);

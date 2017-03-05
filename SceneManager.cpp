@@ -9,21 +9,11 @@ SceneManager::SceneManager()
     SceneManifest::EnemySwarm wave;
     wave.emplace_back(Enemy::DamagedEasy, 2);
     waves.push_back(wave);
-    m_scenes.emplace(Entrance, SceneManifest{
-                    EntranceSceneBG,
-                    std::move(waves),
-                    WINDOW_WIDTH - 100,
-                    WINDOW_WIDTH - 300
-                });
 
-    // Scene 2: Ruin
-    waves.clear();
-    // Wave 1
     wave.clear();
     wave.emplace_back(Enemy::Easy, 3);
     waves.push_back(wave);
 
-    // Wave 2
     wave.clear();
     wave.emplace_back(Enemy::Easy, 5);
     waves.push_back(wave);
@@ -34,32 +24,41 @@ SceneManager::SceneManager()
     wave.emplace_back(Enemy::Medium, 1);
     waves.push_back(wave);
 
-    // Wave 4
+    m_scenes.emplace(Entrance, SceneManifest{
+                    EntranceSceneBG,
+                    std::move(waves),
+                    700,
+                    1000
+                });
+
+    // Scene 2: Ruin
+    waves.clear();
+
     wave.clear();
     wave.emplace_back(Enemy::Easy, 2);
     wave.emplace_back(Enemy::Medium, 2);
     waves.push_back(wave);
 
-    // Wave 5
     wave.clear();
     wave.emplace_back(Enemy::Medium, 5);
     waves.push_back(wave);
 
-    // Wave 6
     wave.clear();
     wave.emplace_back(Enemy::Easy, 3);
     wave.emplace_back(Enemy::Hard, 1);
     waves.push_back(wave);
 
-    // Wave 7
     wave.clear();
     wave.emplace_back(Enemy::Medium, 2);
     wave.emplace_back(Enemy::Hard, 1);
     waves.push_back(wave);
 
-    // Wave 8
     wave.clear();
     wave.emplace_back(Enemy::Hard, 3);
+    waves.push_back(wave);
+
+    wave.clear();
+    wave.emplace_back(Enemy::Hard, 5);
     waves.push_back(wave);
 
     m_scenes.emplace(Ruins, SceneManifest{
