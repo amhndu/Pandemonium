@@ -32,9 +32,12 @@ Game::Game() :
     TextureManager::load(PlayerSprite, "assets/playersprite.png");
     TextureManager::load(Bot1Sprite, "assets/bot1sprite.png");
     TextureManager::load(Bot2Sprite, "assets/bot2sprite.png");
-    TextureManager::load(Bot3Sprite, "assets/enemy.png");
+    TextureManager::load(Bot3Sprite, "assets/bot3sprite.png");
     TextureManager::load(SmokeParticle, "assets/particle.png");
     TextureManager::get(SmokeParticle).setSmooth(true);
+
+    TextureManager::load(ArrowTexture, "assets/arrow.png");
+    TextureManager::load(BulletTexture, "assets/bullet.png");
 
     m_particleSystem.setTexture(&TextureManager::get(SmokeParticle));
 

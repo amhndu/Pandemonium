@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "Constants.h"
 #include "Enemy.h"
+#include "Projectile.h"
 #include <iostream>
 
 Player::Player(GameObjectManager& gom) :
@@ -34,7 +35,7 @@ void Player::handleCollision(GameObject& other)
             break;
         case EnemyObject:
             break;
-        case Projectile:
+        case ProjectileObject:
             // If colliding, then reduce armor/health
             break;
     }
@@ -71,7 +72,10 @@ void Player::setZ(int z)
 
 void Player::handleEvent(const sf::Event& event)
 {
-
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LAlt)
+    {
+        changeWeapon();
+    }
 }
 
 void Player::attackEnemy(Enemy& enemy)
@@ -106,21 +110,15 @@ int Player::getHealth()
 
 void Player::changeWeapon()
 {
-    if(m_currentWeapon == CrossBow)
-        m_currentWeapon = CrowBar;
-    else
-        m_currentWeapon = CrossBow;
+    m_currentWeapon = static_cast<WeaponType>(1 - m_currentWeapon);
+    m_currentAnimation = m_currentWeapon == CrowBar ? 0 : 4;
+    m_sprite.setSpriteIndex(m_animationframe[m_currentAnimation][m_frame]);
 }
 
 Player::WeaponType Player::getWeaponType()
 {
     return m_currentWeapon;
 }
-/*
-bool Player::isCrossBow()
-{
-    return (m_currentWeapon == CrossBow);
-}*/
 
 
 
@@ -156,12 +154,19 @@ void Player::update(float dt)
             moving = false;
             if (!m_attacking)
             {
-                if (m_currentAnimation >= 3)
-                    m_currentAnimation = 1;
-                else
-                    ++m_currentAnimation;
+                switch (m_currentWeapon)
+                {
+                case CrowBar:
+                    if (m_currentAnimation >= 3)
+                        m_currentAnimation = 1;
+                    else
+                        ++m_currentAnimation;
+                    break;
+                case CrossBow:
+                    m_currentAnimation = 5;
+                    break;
+                }
                 m_attacking = true;
-
             }
 
         }
@@ -192,10 +197,7 @@ void Player::update(float dt)
             }
             m_sprite.setFlip(m_flip);
         }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        {
-            changeWeapon();
-        }
+
         float d = LAND_APP_HEIGHT * m_z / 10.f;
         m_sprite.setPosition(m_position.x + d * LAND_SLOPE,
                              m_position.y + d);
@@ -204,9 +206,9 @@ void Player::update(float dt)
         {
             if (!m_attacking) // i.e. only moving
             {
-                if (m_currentAnimation != 0)
+                if (m_currentAnimation != 0 && m_currentAnimation != 4)
                 {
-                    m_currentAnimation = 0;
+                    m_currentAnimation = m_currentWeapon == CrowBar ? 0 : 4;
                     m_frame = 0;
                 }
             }
@@ -221,8 +223,17 @@ void Player::update(float dt)
                     m_frame = 0;
                     if (m_attacking)
                     {
-                        m_gameObjects.foreach([&](GameObject& g){
-                            if (g.getType() == EnemyObject) attackEnemy(static_cast<Enemy&>(g));});
+                        if (m_currentWeapon == CrowBar)
+                        {
+                            m_gameObjects.foreach([&](GameObject& g){
+                                if (g.getType() == EnemyObject) attackEnemy(static_cast<Enemy&>(g));});
+                        }
+                        else
+                        {
+                            m_gameObjects.insert("arrow", new Projectile(Projectile::Arrow,
+                                                                         getPosition() + sf::Vector2f{100.f, -100.f},
+                                                                         350.f));
+                        }
                         m_attacking = false;
                     }
                 }
@@ -232,7 +243,7 @@ void Player::update(float dt)
         else
         {
             m_frame = 0;
-            m_sprite.setSpriteIndex(0);
+            m_sprite.setSpriteIndex(m_animationframe[m_currentWeapon == CrowBar ? 0 : 4][m_frame]);
         }
     }
 }

@@ -1,11 +1,24 @@
 #include "Projectile.h"
 #include "ResourceManager.h"
 #include "Constants.h"
+#include "Enemy.h"
 
-Projectile::Projectile() :
-    GameObject(PlayerObject)
+Projectile::Projectile(Type t, const sf::Vector2f& pos, float vel) :
+    GameObject(GameObject::ProjectileObject),
+    m_type(t),
+    m_velocity(vel),
+    m_collided(false)
 {
-    
+    switch (m_type)
+    {
+        case Arrow:
+            m_sprite.setTexture(TextureManager::get(ArrowTexture));
+            break;
+        case Bullet:
+            m_sprite.setTexture(TextureManager::get(BulletTexture));
+            break;
+    }
+    m_sprite.setPosition(pos);
 }
 
 void Projectile::handleCollision(GameObject& other)
@@ -13,29 +26,33 @@ void Projectile::handleCollision(GameObject& other)
     switch (other.getType())
     {
         case Button:
-            break ;
+            break;
         case PlayerObject:
-            
-            break ;
+            break;
         case EnemyObject:
-            //decrease health
-            break ;
+            auto& enemy = static_cast<Enemy&>(other);
+            if (enemy.getGlobalBounds().intersects(m_sprite.getGlobalBounds()))
+            {
+                enemy.inflictDamage(20);
+                setCollided();
+            }
+            break;
     }
 }
 
 void Projectile::setActive(bool active)
 {
-    m_active = active ;
+    m_active = active;
 }
 
 sf::Vector2f Projectile::getPosition()
 {
-    return m_circle.getPosition() ;
+    return m_sprite.getPosition();
 }
 
 void Projectile::setPosition(float x , float y)
 {
-    m_circle.setPosition(x,y) ;
+    m_sprite.setPosition(x,y);
 }
 
 void Projectile::handleEvent(const sf::Event& event)
@@ -43,24 +60,26 @@ void Projectile::handleEvent(const sf::Event& event)
 
 }
 
-void Projectile::setVelocity(float val)
+void Projectile::setCollided()
 {
-    velocity = val ;
+    m_collided = true;
 }
-
 
 void Projectile::update(float dt)
 {
     if(m_active)
     {
-        
+        m_sprite.move(m_velocity * dt, 0);
+        if (m_sprite.getPosition().x > WINDOW_WIDTH - m_sprite.getGlobalBounds().width ||
+            m_sprite.getPosition().x < 0)
+            setCollided();
     }
 }
 
 void Projectile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     if (m_active)
-        target.draw(m_circle) ;
+        target.draw(m_sprite);
 }
 
 
