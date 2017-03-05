@@ -1,4 +1,4 @@
-#include "ParticleSystem.hpp"
+#include "ParticleSystem.h"
 #include <iostream>
 #include <ctime>
 

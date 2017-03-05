@@ -1,6 +1,6 @@
 #ifndef SMOKE_H
 #define SMOKE_H
-#include "ParticleSystem.hpp"
+#include "ParticleSystem.h"
 #include "GameObject.h"
 
 class SmokeEmitter : public ParticleSystem::Emitter, public GameObject
