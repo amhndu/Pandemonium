@@ -104,7 +104,7 @@ void Player::attackEnemy(Enemy& enemy)
 
     if (weaponextension.intersects(enemybody))
     {
-        if (enemy.inflictDamage(100)) // If it dies: health bonus
+        if (enemy.inflictDamage(20)) // If it dies: health bonus
         {
             m_health += 20;
             m_health = std::min(MAX_HEALTH, m_health);
