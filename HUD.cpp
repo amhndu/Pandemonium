@@ -64,7 +64,7 @@ void HUD::update(float dt)
     m_fill.setSize(sf::Vector2f(m_player.getHealth(),10));
     m_weaponText.setString("Current Weapon: " +
                             std::string(m_player.getWeaponType() == Player::CrossBow ? "Hawkeye's Cross Bow" : "Gordon's Crowbar"));
-    m_crossBow.setString("No of Cross Bow : " + std::to_string(m_player.getArrowLeft()));
+    m_crossBow.setString("No of Arrows : " + std::to_string(m_player.getArrowLeft()));
 }
 
 void HUD::setPosition(float x, float y)

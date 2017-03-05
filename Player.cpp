@@ -95,14 +95,16 @@ void Player::attackEnemy(Enemy& enemy)
 
     }
     weaponextension.width *= 1.f / 4.f;
-    weaponextension.top = m_z;
+    weaponextension.top = m_z - 1;
+    weaponextension.height = 3;
 
     sf::FloatRect enemybody = enemy.getGlobalBounds();
-    enemybody.top = enemy.getZ();
+    enemybody.top = enemy.getZ() - 1;
+    enemybody.height = 3;
 
-    if (std::abs(m_z - enemy.getZ()) < 1.5f && weaponextension.intersects(enemybody))
+    if (weaponextension.intersects(enemybody))
     {
-        if (enemy.inflictDamage(20))
+        if (enemy.inflictDamage(20)) // If it dies: health bonus
         {
             m_health += 20;
             m_health = std::min(MAX_HEALTH, m_health);
@@ -239,8 +241,9 @@ void Player::update(float dt)
                         {
                             if(m_gameObjects.insert("arrow", new Projectile(Projectile::Arrow,
                                                                          getPosition() + sf::Vector2f{100.f - 80.f * m_flip, -100.f},
-                                                                         350.f - 700.f * m_flip)))
+                                                                         350.f - 700.f * m_flip, m_z)))
                                 --m_arrowLeft;
+
                         }
                         m_attacking = false;
                     }

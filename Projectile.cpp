@@ -3,11 +3,12 @@
 #include "Constants.h"
 #include "Enemy.h"
 
-Projectile::Projectile(Type t, const sf::Vector2f& pos, float vel) :
+Projectile::Projectile(Type t, const sf::Vector2f& pos, float vel, float z) :
     GameObject(GameObject::ProjectileObject),
     m_type(t),
     m_velocity(vel),
-    m_collided(false)
+    m_collided(false),
+    m_z(z)
 {
     switch (m_type)
     {
@@ -31,9 +32,15 @@ void Projectile::handleCollision(GameObject& other)
             break;
         case EnemyObject:
             auto& enemy = static_cast<Enemy&>(other);
-            if (enemy.getGlobalBounds().intersects(m_sprite.getGlobalBounds()))
+            auto box1 = m_sprite.getGlobalBounds();
+            box1.top = m_z - 1;
+            box1.height = 3;
+            auto box2 = enemy.getGlobalBounds();
+            box2.top = enemy.getZ() - 1;
+            box2.height = 3;
+            if (box1.intersects(box2))
             {
-                enemy.inflictDamage(20);
+                enemy.inflictDamage(15);
                 setCollided();
             }
             break;

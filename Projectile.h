@@ -13,7 +13,7 @@ public:
         Arrow,
         Bullet
     };
-    Projectile(Type t, const sf::Vector2f& pos, float vel);
+    Projectile(Type t, const sf::Vector2f& pos, float vel, float z);
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
     sf::Vector2f getPosition() override;
@@ -22,9 +22,11 @@ public:
     void update(float dt) override;
     bool toDestroy() { return m_collided; };
     void setCollided();
+    void setZ(float z) { m_z = z; };
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
+    float m_z;
     float m_velocity;
     sf::Sprite m_sprite;
     Type m_type;
