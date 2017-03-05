@@ -81,14 +81,22 @@ void Game::setState(GameState state)
 
             m_background.setTexture(TextureManager::get(StartScreenBackground));
             m_activeObjects = &m_startButtons;
+            
+            m_bgMusic.openFromFile("assets/light_music.wav");
+            
+
             break;
         }
         case Cutscene:
             m_background.setTexture(TextureManager::get(Cutscene1));
             m_activeObjects = nullptr;
+            m_bgMusic.openFromFile("assets/cutscene.wav");
+
             break;
         case Playing:
             m_timer.restart();
+            m_bgMusic.openFromFile("assets/wave5-.wav");
+
             m_activeObjects = &m_gameObjects;
             break;
         case Pause:
@@ -112,6 +120,8 @@ void Game::setState(GameState state)
             exitBtn.setCallback([&](){ setState(Exit); });
 
             m_activeObjects = &m_pauseButtons;
+            m_bgMusic.openFromFile("assets/pause.wav");
+
             break;
         }
         case GameOverWin:
@@ -163,6 +173,8 @@ void Game::setState(GameState state)
             break;
         }
     }
+    m_bgMusic.setLoop(true);
+    m_bgMusic.play();
 }
 
 void Game::newGame()

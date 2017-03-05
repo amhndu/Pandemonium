@@ -52,6 +52,8 @@ private:
     sf::Clock m_timer;
     sf::Sprite m_pauseIcon;
     sf::RectangleShape overlay;
+    
+    sf::Music m_bgMusic;
 
     ParticleSystem &m_particleSystem;
 };

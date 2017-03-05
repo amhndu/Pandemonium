@@ -24,19 +24,27 @@ Enemy::Enemy(Type type, Player& player, SmokeEmitter &smoke):
             m_sprite.setTexture(TextureManager::get(Bot1Sprite), {60, 200});
             m_health = 40;
             m_attackDamage = 10;
+            m_enemyVelocity = 120.f;
+            m_enemyZVelocity = 15.f;
             m_emmiterPosition = {45.f, -65.f};
             break;
         case Medium:
             m_sprite.setTexture(TextureManager::get(Bot2Sprite), {120, 100});
             m_health = 60;
             m_attackDamage = 20;
+            m_enemyVelocity = 50.f;
+            m_enemyZVelocity = 8.f;
             m_emmiterPosition = {68.f, -42.f};
             break;
         case Hard:
             m_sprite.setTexture(TextureManager::get(Bot3Sprite), {135, 210});
             m_health = 100;
             m_attackDamage = 30;
+
             m_emmiterPosition = {104.f, -106.f};
+
+            m_enemyZVelocity = 8.f;
+            m_enemyVelocity = 50.f;
             break;
     }
 
@@ -153,7 +161,7 @@ void Enemy::update(float dt)
         {
             if (!inbounds)
             {
-                m_position.x += -ENEMY_VELOCITY * dt;
+                m_position.x += -m_enemyVelocity * dt;
                 moving = true;
             }
             m_sprite.setFlip(false);
@@ -162,7 +170,7 @@ void Enemy::update(float dt)
         {
             if (!inbounds)
             {
-                m_position.x += +ENEMY_VELOCITY * dt;
+                m_position.x += +m_enemyVelocity * dt;
                 moving = true;
             }
             m_sprite.setFlip(true);
@@ -176,12 +184,12 @@ void Enemy::update(float dt)
         }
         else if(m_player.getZ() - m_z > 0)
         {
-            m_z += 2.f * Z_VELOCITY  * dt / 5.f;
+            m_z += 2.f * m_enemyZVelocity  * dt / 5.f;
             moving = true;
         }
         else if(m_player.getZ() - m_z < 0)
         {
-            m_z += -(2.f * Z_VELOCITY * dt / 5.f);
+            m_z += -(2.f * m_enemyZVelocity * dt / 5.f);
             moving = true;
         }
 
