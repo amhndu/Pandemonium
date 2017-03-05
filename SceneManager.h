@@ -26,6 +26,8 @@ public:
     SceneManager();
     const SceneManifest& getScene();
     SceneManifest::EnemySwarm getWave();
+    std::size_t getWaveNumber();
+    std::size_t getSceneNumber();
     void restart();
     bool nextScene();
     bool nextWave();

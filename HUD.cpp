@@ -1,7 +1,7 @@
 #include "HUD.h"
 #include "Constants.h"
 #include "ResourceManager.h"
-
+#include "iostream"
 
 HUD::HUD(Player& player) :
     GameObject(GameObject::HUD),
@@ -44,6 +44,25 @@ HUD::HUD(Player& player) :
 }
 
 
+void HUD::setSceneNumber(int number)
+{
+    m_sceneNumber.setString("Scene : " + std::to_string(number));
+    m_sceneNumber.setPosition(sf::Vector2f(400, 70));
+    m_sceneNumber.setFont(FontManager::get(DefaultFont));
+    m_sceneNumber.setColor(sf::Color::White);
+    m_sceneNumber.setCharacterSize(20);
+}
+
+void HUD::setWaveNumber(int number)
+{
+    m_waveNumber.setString("Wave : " + std::to_string(number));
+    m_waveNumber.setPosition(sf::Vector2f(400, 100));    
+    m_waveNumber.setFont(FontManager::get(DefaultFont));
+    m_waveNumber.setColor(sf::Color::White);
+    m_waveNumber.setCharacterSize(20);
+}
+
+
 void HUD::update(float dt)
 {
     m_fill.setSize(sf::Vector2f(m_player.getHealth(),10));
@@ -78,5 +97,7 @@ void HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(m_weaponText, states);
         if (m_isCrossBow)
             target.draw(m_crossBow, states);
+        target.draw(m_sceneNumber, states);
+        target.draw(m_waveNumber, states);
     }
 }

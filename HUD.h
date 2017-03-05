@@ -16,6 +16,8 @@ public:
     void setActive(bool active) override;
     void handleCollision(GameObject& other) override {};
     void setText(const std::string& text);
+    void setWaveNumber(int number);
+    void setSceneNumber(int number);
 
 protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -24,9 +26,13 @@ private:
     sf::Text m_healthText;
     sf::Text m_weaponText;
     sf::Text m_crossBow;
+    sf::Text m_sceneNumber;
+    sf::Text m_waveNumber;
     sf::RectangleShape m_bg;
     sf::RectangleShape m_fill;
     Player& m_player;
+    
+    
     
     bool m_isCrossBow;
 };

@@ -80,7 +80,6 @@ void Game::setState(GameState state)
             m_activeObjects = &m_startButtons;
             
             m_bgMusic.openFromFile("assets/light_music.wav");
-            
 
             break;
         }
@@ -92,8 +91,10 @@ void Game::setState(GameState state)
             break;
         case Playing:
             m_timer.restart();
-            m_bgMusic.openFromFile("assets/wave5-.wav");
-
+            if(m_scene.getSceneNumber() < 5)
+                m_bgMusic.openFromFile("assets/wave5-.wav");
+            else
+                m_bgMusic.openFromFile("assets/wave5+ music.wav");
             m_activeObjects = &m_gameObjects;
             break;
         case Pause:
@@ -261,7 +262,6 @@ void Game::run()
         }
 
 
-
         m_window.display();
     }
 }
@@ -276,7 +276,6 @@ void Game::sceneSetup()
     player.setDeathCallback([&](){ setState(GameOverLose); });
 
     m_gameObjects.insert("HUD", new HUD(player));
-
     m_background.setTexture(TextureManager::get(m_scene.getScene().sceneBG));
 
     waveSetup(player);
@@ -303,7 +302,9 @@ void Game::waveSetup(Player& player)
             bot.setDeathCallback([&](){ enemyDeathCallback(); } );
         }
     }
-
+    auto &hud = *static_cast<HUD*>(m_gameObjects.get("HUD"));
+    hud.setSceneNumber(m_scene.getSceneNumber());
+    hud.setWaveNumber(m_scene.getWaveNumber());
 }
 
 void Game::enemyDeathCallback()

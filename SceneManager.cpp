@@ -96,6 +96,17 @@ void SceneManager::restart()
     m_currentWave = 0;
 }
 
+std::size_t SceneManager::getWaveNumber()
+{
+    return m_currentWave+1;
+}
+
+std::size_t SceneManager::getSceneNumber()
+{
+    return m_currentScene->first+1;
+}
+
+
 SceneManifest::EnemySwarm SceneManager::getWave()
 {
     return m_currentScene->second.waves[m_currentWave];
