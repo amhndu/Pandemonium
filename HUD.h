@@ -34,7 +34,6 @@ private:
     
     
     
-    bool m_isCrossBow;
 };
 
 #endif

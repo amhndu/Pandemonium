@@ -17,7 +17,8 @@ Player::Player(GameObjectManager& gom) :
     m_flip(false),
     m_redTimer(0),
     m_colliding(false),
-    m_currentWeapon(CrowBar)
+    m_currentWeapon(CrowBar),
+    m_arrowLeft(10)
 {
     m_sprite.setTexture(TextureManager::get(PlayerSprite), {120, 200});
     m_sprite.setSpriteIndex(0);
@@ -45,6 +46,12 @@ void Player::setActive(bool active)
 {
     m_active = active;
 }
+
+int Player::getArrowLeft()
+{
+    return m_arrowLeft;
+}
+
 
 sf::Vector2f Player::getPosition()
 {
@@ -228,11 +235,12 @@ void Player::update(float dt)
                             m_gameObjects.foreach([&](GameObject& g){
                                 if (g.getType() == EnemyObject) attackEnemy(static_cast<Enemy&>(g));});
                         }
-                        else
+                        else if (m_arrowLeft > 0)
                         {
-                            m_gameObjects.insert("arrow", new Projectile(Projectile::Arrow,
+                            if(m_gameObjects.insert("arrow", new Projectile(Projectile::Arrow,
                                                                          getPosition() + sf::Vector2f{100.f - 80.f * m_flip, -100.f},
-                                                                         350.f - 700.f * m_flip));
+                                                                         350.f - 700.f * m_flip)))
+                                --m_arrowLeft;
                         }
                         m_attacking = false;
                     }
