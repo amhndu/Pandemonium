@@ -94,7 +94,7 @@ void Game::setState(GameState state)
             break;
         case Playing:
             m_timer.restart();
-            if(m_scene.getSceneNumber() < 5)
+            if(m_scene.getSceneNumber() < 2)
                 m_bgMusic.openFromFile("assets/wave5-.wav");
             else
                 m_bgMusic.openFromFile("assets/wave5+ music.wav");
@@ -287,6 +287,7 @@ void Game::sceneSetup()
 void Game::waveSetup(Player& player)
 {
     m_waveTimer = 3.f;
+    setState(Playing);
     m_enemies = 0;
     const SceneManifest::EnemySwarm& swarm = m_scene.getWave();
     for (const auto& p : swarm)
