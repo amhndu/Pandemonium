@@ -169,6 +169,7 @@ void Game::setState(GameState state)
 
             m_background.setTexture(TextureManager::get(GameOverWinBackground));
             m_activeObjects = &m_endButtons;
+            m = &MusicManager::get(StartScreenMusic);
             break;
         }
         case GameOverLose:
@@ -193,6 +194,7 @@ void Game::setState(GameState state)
 
             m_background.setTexture(TextureManager::get(GameOverLoseBackground));
             m_activeObjects = &m_endButtons;
+            m = &MusicManager::get(StartScreenMusic);
             break;
         }
     }
