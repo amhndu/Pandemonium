@@ -31,7 +31,13 @@ void Projectile::handleCollision(GameObject& other)
             break;
         case EnemyObject:
             auto& enemy = static_cast<Enemy&>(other);
-            if (enemy.getGlobalBounds().intersects(m_sprite.getGlobalBounds()))
+            auto box1 = m_sprite.getGlobalBounds();
+            box1.top = m_z - 1;
+            box1.height = 3;
+            auto box2 = enemy.getGlobalBounds();
+            box2.top = enemy.getZ() - 1;
+            box2.height = 3;
+            if (box1.intersects(box2))
             {
                 enemy.inflictDamage(20);
                 setCollided();
