@@ -48,6 +48,8 @@ private:
     float m_frameTimer;
     float m_attackTimer;
     float m_stunTimer;
+    float m_enemyVelocity;
+    float m_enemyZVelocity;
     int m_frame;
 
     Player& m_player;
