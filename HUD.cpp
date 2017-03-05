@@ -7,8 +7,7 @@ HUD::HUD(Player& player) :
     GameObject(GameObject::HUD),
     m_bg(sf::Vector2f(100.f,5)),
     m_fill(sf::Vector2f()),
-    m_player(player),
-    m_isCrossBow(player.getWeaponType() == Player::CrossBow)
+    m_player(player)
 {
     m_healthText.setString("Health :");
     m_healthText.setFont(FontManager::get(DefaultFont));
@@ -20,7 +19,7 @@ HUD::HUD(Player& player) :
     m_weaponText.setColor(sf::Color::White);
     m_weaponText.setCharacterSize(20);
 
-    m_crossBow.setString("No of Cross Bow :");
+    m_crossBow.setString("No of Arrows : " + std::to_string(m_player.getArrowLeft()));
     m_crossBow.setFont(FontManager::get(DefaultFont));
     m_crossBow.setColor(sf::Color::White);
     m_crossBow.setCharacterSize(20);
@@ -64,7 +63,8 @@ void HUD::update(float dt)
 {
     m_fill.setSize(sf::Vector2f(m_player.getHealth(),10));
     m_weaponText.setString("Current Weapon: " +
-    std::string(m_player.getWeaponType() == Player::CrossBow ? "Hawkeye's Cross Bow" : "Gordon's Crowbar"));
+                            std::string(m_player.getWeaponType() == Player::CrossBow ? "Hawkeye's Cross Bow" : "Gordon's Crowbar"));
+    m_crossBow.setString("No of Arrows : " + std::to_string(m_player.getArrowLeft()));
 }
 
 void HUD::setPosition(float x, float y)
@@ -86,6 +86,8 @@ void HUD::handleEvent(const sf::Event& event)
 
 }
 
+
+
 void HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     if (m_active)
@@ -94,7 +96,7 @@ void HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(m_fill, states);
         target.draw(m_healthText, states);
         target.draw(m_weaponText, states);
-        if (m_isCrossBow)
+        if (m_player.getWeaponType() == Player::CrossBow)
             target.draw(m_crossBow, states);
         target.draw(m_sceneNumber, states);
         target.draw(m_waveNumber, states);

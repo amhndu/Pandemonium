@@ -26,6 +26,7 @@ public:
     void update(float dt) override;
     float getZ();
     int getHealth();
+    int getArrowLeft();
     void setZ(int z);
     void inflictDamage(int damage);
     template <typename Callable>
@@ -61,6 +62,7 @@ private:
     bool m_flip;
     float m_redTimer;
     std::function<void(void)> m_cb;
+    int m_arrowLeft;
 
     WeaponType m_currentWeapon;
 };
