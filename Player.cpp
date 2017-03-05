@@ -79,7 +79,7 @@ void Player::setZ(int z)
 
 void Player::handleEvent(const sf::Event& event)
 {
-    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LAlt)
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::K)
     {
         changeWeapon();
     }
@@ -104,7 +104,7 @@ void Player::attackEnemy(Enemy& enemy)
 
     if (weaponextension.intersects(enemybody))
     {
-        if (enemy.inflictDamage(20)) // If it dies: health bonus
+        if (enemy.inflictDamage(100)) // If it dies: health bonus
         {
             m_health += 20;
             m_health = std::min(MAX_HEALTH, m_health);
@@ -158,7 +158,7 @@ void Player::update(float dt)
         }
 
         bool moving = false;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
         {
             moving = false;
             if (!m_attacking)
@@ -181,25 +181,25 @@ void Player::update(float dt)
         }
         else if (!m_colliding)
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && m_sprite.getPosition().x < WINDOW_WIDTH)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && m_sprite.getPosition().x < WINDOW_WIDTH)
             {
                 m_position.x += PLAYER_VELOCITY * dt;
                 moving = true;
                 m_flip = false;
             }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_sprite.getPosition().x >= 0)
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && m_sprite.getPosition().x >= 0)
             {
                 m_position.x += -PLAYER_VELOCITY * dt;
                 moving = true;
                 m_flip = true;
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_z >= 0 && m_sprite.getPosition().x < WINDOW_WIDTH)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_z >= 0 && m_sprite.getPosition().x < WINDOW_WIDTH)
             {
                 m_z += -Z_VELOCITY * dt;
                 moving = true;
             }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_z < 10 && m_sprite.getPosition().x >= 0)
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && m_z < 10 && m_sprite.getPosition().x >= 0)
             {
                 m_z += Z_VELOCITY * dt;
                 moving = true;

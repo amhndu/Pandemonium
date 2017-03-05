@@ -20,7 +20,8 @@ std::unique_ptr<MusicManager> MusicManager::m_instance = nullptr;
 Game::Game() :
     m_window(),
     m_waveTimer(3.f),
-    m_particleSystem(ParticleSystem::getInstance())
+    m_particleSystem(ParticleSystem::getInstance()),
+    m_bgMusic(nullptr)
 {
     if (WINDOW_HEIGHT == sf::VideoMode::getDesktopMode().height)
         m_window.create(sf::VideoMode::getDesktopMode(), "Game Jar", sf::Style::Fullscreen);
@@ -51,7 +52,7 @@ Game::Game() :
 
     MusicManager::load(StartScreenMusic, "assets/light_music.wav");
     MusicManager::get(StartScreenMusic).setLoop(true);
-    MusicManager::load(CutsceneMusic, "assets/cuscene.wav");
+    MusicManager::load(CutsceneMusic, "assets/cutscene.wav");
     MusicManager::get(CutsceneMusic).setLoop(true);
     MusicManager::load(SceneMusic1, "assets/wave5-.wav");
     MusicManager::get(SceneMusic1).setLoop(true);
@@ -76,7 +77,7 @@ Game::Game() :
 void Game::setState(GameState state)
 {
     m_state = state;
-    sf::Music *m;
+    sf::Music *m = nullptr;
     switch (m_state)
     {
         case StartScreen:
@@ -196,7 +197,7 @@ void Game::setState(GameState state)
         }
     }
 
-    if (m_bgMusic != m)
+    if (m && m_bgMusic != m)
     {
         if (m_bgMusic)
             m_bgMusic->stop();
