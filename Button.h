@@ -17,7 +17,11 @@ public:
     void handleCollision(GameObject& other) override {};
 
     void setText(const std::string& text);
+    void setTextColor(const sf::Color& color);
+    void setBackgroundColor(const sf::Color& color);
+    void setHoverColor(const sf::Color& color);
 
+    
     template <class Function>
     void inline setCallback(Function f) { m_callback = f; };
 protected:
@@ -27,6 +31,8 @@ private:
     sf::Text m_text;
     sf::RectangleShape m_bg;
     bool m_mouseInside;
+    sf::Color m_hoverColor;
+    sf::Color m_backgroundColor;
 };
 
 #endif // BUTTON_H

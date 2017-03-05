@@ -12,7 +12,8 @@ enum GameState
     Cutscene,
     Playing,
     Pause,
-    GameOver,
+    GameOverWin,
+    GameOverLose,
     Exit
 };
 

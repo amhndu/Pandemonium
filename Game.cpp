@@ -21,7 +21,9 @@ Game::Game() :
     FontManager::load(DefaultFont, "assets/font.ttf");
 
     TextureManager::load(StartScreenBackground, "assets/startscreen.png");
-    TextureManager::load(GameOverBackground, "assets/gameover.png");
+    TextureManager::load(GameOverWinBackground, "assets/gameover.png");
+    TextureManager::load(GameOverLoseBackground, "assets/gameover.png");
+
     TextureManager::load(EntranceSceneBG, "assets/gamebackground.png");
     TextureManager::load(RuinSceneBG, "assets/gamebackground.png");
     TextureManager::load(PauseIcon, "assets/pause.png");
@@ -41,8 +43,8 @@ Game::Game() :
     m_pauseIcon.setTexture(TextureManager::get(PauseIcon));
     m_pauseIcon.setOrigin(m_pauseIcon.getGlobalBounds().width / 2.f, m_pauseIcon.getGlobalBounds().height / 2.f);
     m_pauseIcon.setPosition(m_window.getSize().x / 2.f, m_window.getSize().y / 2.f);
-    newGame();
-//     setState(StartScreen);
+//    newGame();
+     setState(StartScreen);
 }
 
 void Game::setState(GameState state)
@@ -57,11 +59,17 @@ void Game::setState(GameState state)
             auto &startBtn = *static_cast<Button*>(m_startButtons.insert("start", new Button()));
             startBtn.setText("Start Game");
             startBtn.setPosition(20, 80);
+            startBtn.setTextColor(sf::Color::White);
+            startBtn.setBackgroundColor(sf::Color(0x25000Aff));
+            startBtn.setHoverColor(sf::Color::Black);
             startBtn.setCallback([&](){ newGame(); });
 
             auto &exitBtn = *static_cast<Button*>(m_startButtons.insert("exit", new Button()));
             exitBtn.setText("Exit");
             exitBtn.setPosition(20, 180);
+            exitBtn.setTextColor(sf::Color::White);
+            exitBtn.setBackgroundColor(sf::Color(0x25000Aff));
+            exitBtn.setHoverColor(sf::Color::Black);
             exitBtn.setCallback([&](){ setState(Exit); });
 
             m_background.setTexture(TextureManager::get(StartScreenBackground));
@@ -82,32 +90,68 @@ void Game::setState(GameState state)
 
             auto &startBtn = *static_cast<Button*>(m_pauseButtons.insert("start", new Button()));
             startBtn.setText("Resume");
-            startBtn.setPosition(20, 80);
+            startBtn.setPosition(20, 150);
+            startBtn.setTextColor(sf::Color::White);
+            startBtn.setBackgroundColor(sf::Color::Transparent);
+            startBtn.setHoverColor(sf::Color::Black);
             startBtn.setCallback([&](){ setState(Playing); });
 
             auto &exitBtn = *static_cast<Button*>(m_pauseButtons.insert("exit", new Button()));
             exitBtn.setText("Exit");
-            exitBtn.setPosition(20, 180);
+            exitBtn.setPosition(20, 250);
+            exitBtn.setTextColor(sf::Color::White);
+            exitBtn.setBackgroundColor(sf::Color::Transparent);
+            exitBtn.setHoverColor(sf::Color::Black);
             exitBtn.setCallback([&](){ setState(Exit); });
 
             m_activeObjects = &m_pauseButtons;
             break;
         }
-        case GameOver:
+        case GameOverWin:
         {
             m_endButtons.clear();
 
             auto &startBtn = *static_cast<Button*>(m_endButtons.insert("start", new Button()));
             startBtn.setText("Play Again");
             startBtn.setPosition(20, 80);
+            startBtn.setTextColor(sf::Color::White);
+            startBtn.setBackgroundColor(sf::Color(0x25000Aff));
+            startBtn.setHoverColor(sf::Color::Black);
             startBtn.setCallback([&](){ newGame(); });
 
             auto &exitBtn = *static_cast<Button*>(m_endButtons.insert("exit", new Button()));
             exitBtn.setText("Exit");
             exitBtn.setPosition(20, 180);
+            exitBtn.setTextColor(sf::Color::White);
+            exitBtn.setBackgroundColor(sf::Color(0x25000Aff));
+            exitBtn.setHoverColor(sf::Color::Black);
             exitBtn.setCallback([&](){ setState(Exit); });
 
-            m_background.setTexture(TextureManager::get(GameOverBackground));
+            m_background.setTexture(TextureManager::get(GameOverWinBackground));
+            m_activeObjects = &m_endButtons;
+            break;
+        }
+        case GameOverLose:
+        {
+            m_endButtons.clear();
+
+            auto &startBtn = *static_cast<Button*>(m_endButtons.insert("start", new Button()));
+            startBtn.setText("Play Again");
+            startBtn.setPosition(20, 80);
+            startBtn.setTextColor(sf::Color::White);
+            startBtn.setBackgroundColor(sf::Color(0x25000Aff));
+            startBtn.setHoverColor(sf::Color::Black);
+            startBtn.setCallback([&](){ newGame(); });
+
+            auto &exitBtn = *static_cast<Button*>(m_endButtons.insert("exit", new Button()));
+            exitBtn.setText("Exit");
+            exitBtn.setPosition(20, 180);
+            exitBtn.setTextColor(sf::Color::White);
+            exitBtn.setBackgroundColor(sf::Color(0x25000Aff));
+            exitBtn.setHoverColor(sf::Color::Black);
+            exitBtn.setCallback([&](){ setState(Exit); });
+
+            m_background.setTexture(TextureManager::get(GameOverLoseBackground));
             m_activeObjects = &m_endButtons;
             break;
         }
@@ -189,7 +233,7 @@ void Game::run()
                             sceneSetup();
                         }
                         else
-                            setState(GameOver);
+                            setState(GameOverWin);
                     }
                     else
                         waveSetup(static_cast<Player&>(*m_gameObjects.get("player")));
@@ -210,7 +254,7 @@ void Game::sceneSetup()
     auto &player = *static_cast<Player*>(m_gameObjects.insert("player", new Player(m_gameObjects)));
     player.setPosition(130, m_window.getSize().y - LAND_APP_HEIGHT);
     player.setZ(5);
-    player.setDeathCallback([&](){ setState(GameOver); });
+    player.setDeathCallback([&](){ setState(GameOverLose); });
 
     m_gameObjects.insert("HUD", new HUD(player));
 

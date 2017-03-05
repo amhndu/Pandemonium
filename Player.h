@@ -12,6 +12,11 @@ class Enemy;
 class Player : public GameObject
 {
 public:
+    enum WeaponType
+    {
+        CrowBar,
+        CrossBow
+    };
     Player(GameObjectManager& gom);
     void handleCollision(GameObject& other) override;
     void setActive(bool active) override;
@@ -28,6 +33,10 @@ public:
     {
         m_cb = f;
     }
+    
+    void changeWeapon();
+    WeaponType getWeaponType();
+    
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
@@ -48,6 +57,9 @@ private:
     bool m_flip;
     float m_redTimer;
     std::function<void(void)> m_cb;
+    
+    WeaponType m_currentWeapon;
+    bool m_isCrossBow;
 };
 
 #endif // PLAYER_H

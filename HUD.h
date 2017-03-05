@@ -21,10 +21,14 @@ protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
-    sf::Text m_text;
+    sf::Text m_healthText;
+    sf::Text m_weaponText;
+    sf::Text m_crossBow;
     sf::RectangleShape m_bg;
     sf::RectangleShape m_fill;
     Player& m_player;
+    
+    bool m_isCrossBow;
 };
 
 #endif
