@@ -1,7 +1,11 @@
 Pandemonium
 ========================
 
-Pandemonium is an action platformer game made for a 72-hour game jam in IIIT Jabalpur.
+Pandemonium is an action platformer game made for a 72-hour game jam in IIIT Jabalpur.   
+This was the winning entry for the theme *Steampunk*   
+Clear waves of Steampunk enemies trying to kill with your crowbar and crossbow!
+
+Keybindings: W A S D for movement, J to hit, K to switch weapon.
 
 
 Team members
