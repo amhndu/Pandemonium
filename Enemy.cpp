@@ -181,17 +181,6 @@ void Enemy::update(float dt)
         }
         m_sprite.setFlip(m_flip);
 
-        if (m_type == Hard)
-        {
-            m_bulletTimer += dt;
-            if (std::abs(m_player.getZ() - m_z) < 2.f && m_bulletTimer > 2.f)
-            {
-                m_gameObjects->insert("arrow", new Projectile(Projectile::Bullet,
-                                                                         getPosition() + sf::Vector2f{100.f - 80.f * !m_flip, -100.f},
-                                                                         350.f - 700.f * !m_flip, m_z));
-                m_bulletTimer = 0;
-            }
-        }
 
         if (std::abs(m_player.getZ() - m_z) < 2.f || std::abs(m_player.getPosition().x - getPosition().x) >= 200.f)
         {
@@ -227,6 +216,18 @@ void Enemy::update(float dt)
         if (m_stunTimer <= 0 && inbounds && m_attackTimer <= 0)
         {
             m_attackTimer = 1.5f;
+        }
+
+        if (m_type == Hard && !inbounds)
+        {
+            m_bulletTimer += dt;
+            if (std::abs(m_player.getZ() - m_z) < 2.f && m_bulletTimer > 2.f)
+            {
+                m_gameObjects->insert("bullet" + std::to_string(reinterpret_cast<std::intptr_t>(this)), new Projectile(Projectile::Bullet,
+                                                                         getPosition() + sf::Vector2f{100.f - 80.f * !m_flip, -100.f},
+                                                                         350.f - 700.f * !m_flip, m_z));
+                m_bulletTimer = 0;
+            }
         }
 
         if (moving)

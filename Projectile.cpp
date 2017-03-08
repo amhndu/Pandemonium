@@ -34,8 +34,8 @@ void Projectile::handleCollision(GameObject& other)
             {
                 auto& player = static_cast<Player&>(other);
                 auto box1 = m_sprite.getGlobalBounds();
-                box1.top = m_z - 1;
-                box1.height = 3;
+                box1.top = m_z;
+                box1.height = 1;
                 auto box2 = player.getGlobalBounds();
                 box2.top = player.getZ() - 1;
                 box2.height = 3;
