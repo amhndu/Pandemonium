@@ -3,7 +3,7 @@ Pandemonium
 
 Pandemonium is an action platformer game made for a 72-hour game jam in IIIT Jabalpur.   
 This was the winning entry for the theme *Steampunk*   
-Clear waves of Steampunk enemies trying to kill with your crowbar and crossbow!
+Clear waves of Steampunk enemies out for your blood with your crowbar and crossbow!
 
 Keybindings: W A S D for movement, J to hit, K to switch weapon.
 
@@ -21,7 +21,8 @@ Team members
 Download
 -----------------------
 
-32-bit Windows executable: https://www.dropbox.com/s/xvroaat97ehmiqa/Pandemonium.zip?dl=0 
+Windows executable: https://www.dropbox.com/s/xvroaat97ehmiqa/Pandemonium.zip?dl=0 
+(Outdated by a few commits which were gameplay improvements and bug fixes, it is recommended to compile from sources if you can)
 
 For Linux/macOS, see Compiling
 
